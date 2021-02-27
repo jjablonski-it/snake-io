@@ -18,10 +18,14 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "dist"),
   },
+  resolve: {
+    extensions: [".ts", ".js"],
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: "src/client/index.html",
       excludeChunks: ["server"],
     }),
   ],
+  target: "node",
 };
