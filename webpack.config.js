@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const NodemonPlugin = require("nodemon-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 const config = {
   entry: {
@@ -26,6 +27,9 @@ const config = {
   resolve: {
     extensions: [".ts", ".js"],
   },
+  output: {
+    path: path.resolve(__dirname, "dist"),
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: "src/client/index.html",
@@ -36,11 +40,9 @@ const config = {
 };
 
 module.exports = (_env, argv) => {
-  console.log(argv);
   if (argv.mode === "production") {
-    config.output = {
-      filename: "[name].[contenthash].js",
-    };
+    (config.output.filename = "[name].[contenthash].js"),
+      (config.plugins = [...config.plugins, new CleanWebpackPlugin()]);
   } else if (argv.mode === "development") {
     config.plugins = [...config.plugins, new NodemonPlugin()];
   }
