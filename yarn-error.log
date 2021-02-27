@@ -1,5 +1,5 @@
 Arguments: 
-  E:\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add added basic config for server
+  E:\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add -D html-webpack-plugin
 
 PATH: 
   C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\mrmas\bin;C:\Program Files\Java\jre1.8.0_281\bin;C:\Users\mrmas\AppData\Local\Programs\Python\Python38\Scripts;C:\Users\mrmas\AppData\Local\Programs\Python\Python38;C:\Program Files\Python39\Scripts;C:\Program Files\Python39;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files\dotnet;C:\Program Files\Microsoft SQL Server\130\Tools\Binn;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\PuTTY;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\ProgramData\chocolatey\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0;C:\WINDOWS\System32\OpenSSH;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;E:\nodejs;C:\Program Files (x86)\Yarn\bin;C:\Users\mrmas\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.8_qbz5n2kfra8p0\LocalCache\local-packages\Python38\Scripts;C:\Users\mrmas\AppData\Local\Microsoft\WindowsApps;E:\Microsoft VS Code\bin;C:\Program Files\OpenSSL-Win64\bin;E:\php7;C:\MinGW\bin;C:\Chromium\bin;C:\Program Files\heroku\bin;E:\IntelliJ\bin;C:\Program Files\PostgreSQL\12\bin;C:\Program Files\MongoDB\Server\4.4\bin;C:\Program Files\Ngrok\bin;C:\Users\mrmas\AppData\Local\Microsoft\WindowsApps;C:\Program Files\nasm\bin;C:\Users\mrmas\AppData\Roaming\npm;C:\Users\mrmas\AppData\Local\Yarn\bin;C:\Program Files\github_cli\bin
@@ -14,17 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/added%20basic%20config%20for%20server: Not found
-      at Request.params.callback [as _callback] (C:\Program Files (x86)\Yarn\lib\cli.js:66097:18)
-      at Request.self.callback (C:\Program Files (x86)\Yarn\lib\cli.js:140749:22)
-      at Request.emit (events.js:315:20)
-      at Request.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:141721:10)
-      at Request.emit (events.js:315:20)
-      at IncomingMessage.<anonymous> (C:\Program Files (x86)\Yarn\lib\cli.js:141643:12)
-      at Object.onceWrapper (events.js:421:28)
-      at IncomingMessage.emit (events.js:327:22)
-      at endReadableNT (_stream_readable.js:1327:12)
-      at processTicksAndRejections (internal/process/task_queues.js:80:21)
+  Error: ENOENT: no such file or directory, scandir 'D:\_Dev\snake-wp\node_modules\@webpack-cli\info\node_modules'
 
 npm manifest: 
   {
