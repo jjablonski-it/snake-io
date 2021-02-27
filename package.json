@@ -1,0 +1,13 @@
+{
+  "name": "snake-multi",
+  "version": "1.0.0",
+  "description": "io style snake game",
+  "scripts": {
+    "build": "webpack mode production",
+    "start": "node dist/server.js",
+    "dev": ""
+  },
+  "author": "Jakub Jabłoński",
+  "license": "MIT",
+  "private": true
+}
