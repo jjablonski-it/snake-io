@@ -4,4 +4,6 @@ const app = express();
 
 app.use(express.static("dist"));
 
-app.listen(PORT, () => console.log("🚀"));
+app.listen(PORT, () =>
+  console.log(`Server running on http://localhost:${PORT}`)
+);
