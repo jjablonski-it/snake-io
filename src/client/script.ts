@@ -1,4 +1,10 @@
 import "./style.css";
-import _ from "lodash";
+import io from "socket.io-client";
+import { emit } from "process";
 
-console.log(_.camelCase("script imported for real"));
+const socket = io();
+
+socket.on("ping", (message: string) => {
+  console.log(message);
+  socket.emit("pong", "PONG");
+});
