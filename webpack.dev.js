@@ -1,45 +1,21 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const NodemonPlugin = require("nodemon-webpack-plugin");
 const { merge } = require("webpack-merge");
-const common = require("./webpack.common");
+const { nodeConfig, webConfig } = require("./webpack.common");
 
 const config = {
   mode: "development",
   devtool: "inline-source-map",
 };
 
-const nodeConfig = merge(common, {
+const node = merge(nodeConfig, {
   ...config,
-  target: "node",
-  entry: "./src/server.ts",
-  output: {
-    filename: "server.js",
-  },
   plugins: [new NodemonPlugin()],
 });
 
-const webConfig = merge(common, {
+const web = merge(webConfig, {
   ...config,
-  target: "web",
-  entry: "./src/client/script.ts",
-  output: {
-    filename: "client/[name].[contenthash].js",
-  },
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"],
-      },
-    ],
-  },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: "./src/client/index.html",
-      excludeChunks: ["server"],
-      filename: "client/index.html",
-    }),
-  ],
+  plugins: [new CleanWebpackPlugin()],
 });
 
-module.exports = [nodeConfig, webConfig];
+module.exports = [node, web];

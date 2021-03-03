@@ -2,10 +2,19 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { merge } = require("webpack-merge");
-const config = require("./webpack.common");
 
-module.exports = merge(config, {
+const { nodeConfig, webConfig } = require("./webpack.common");
+
+const config = {
   mode: "production",
+};
+
+const node = merge(nodeConfig, {
+  ...config,
+});
+
+const web = merge(webConfig, {
+  ...config,
   module: {
     rules: [
       {
@@ -18,9 +27,10 @@ module.exports = merge(config, {
     new MiniCssExtractPlugin({ filename: "[name].[contenthash].css" }),
     new CleanWebpackPlugin(),
   ],
-  output: { filename: "[name].[contenthash].js" },
   optimization: {
     minimize: true,
     minimizer: [`...`, new CssMinimizerPlugin()],
   },
 });
+
+module.exports = [node, web];

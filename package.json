@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "io style snake game",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --config webpack.prod.js",
     "start": "node dist/server.js",
-    "dev": "webpack --watch"
+    "dev": "webpack --watch --config webpack.dev.js"
   },
   "author": "Jakub Jabłoński",
   "license": "MIT",
