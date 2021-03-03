@@ -1,6 +1,5 @@
 import "./style.css";
 import io from "socket.io-client";
-import { emit } from "process";
 
 const socket = io();
 
