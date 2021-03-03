@@ -1,2 +1,4 @@
 import "./style.css";
-console.log("script imported");
+import _ from "lodash";
+
+console.log(_.camelCase("script imported4"));
