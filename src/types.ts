@@ -34,3 +34,8 @@ export interface Player {
   id: string;
   snake: Snake;
 }
+
+export interface State {
+  players: Player[];
+  fruit: Vector;
+}

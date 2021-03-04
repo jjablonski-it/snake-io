@@ -13,3 +13,8 @@ export const getOrAddPlayer = (id: Player["id"]) => {
   players.push(newPlayer);
   return newPlayer;
 };
+
+export const removePlayer = (id: Player["id"]) => {
+  const index = players.findIndex((p) => p.id === id);
+  players.splice(index, 1);
+};
