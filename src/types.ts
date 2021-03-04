@@ -24,6 +24,8 @@ export interface Snake {
   segments: Vector[];
   length: number;
   direction: Direction;
+  forward: () => void;
+  turn: (props: TurnDirection) => void;
 }
 
 export type OptionalSnake = Optional<Snake>;
