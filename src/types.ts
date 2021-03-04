@@ -29,3 +29,8 @@ export interface Snake {
 }
 
 export type OptionalSnake = Optional<Snake>;
+
+export interface Player {
+  id: string;
+  snake: Snake;
+}

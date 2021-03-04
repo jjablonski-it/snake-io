@@ -1,6 +1,7 @@
 import express from "express";
 import { Server } from "socket.io";
 import { PORT } from "./utils/constants";
+import { getOrAddPlayer } from "./utils/players";
 const socket = require("socket.io");
 
 const app = express();
@@ -11,9 +12,11 @@ const server = app.listen(PORT, () =>
 );
 
 const io: Server = socket(server);
-
 io.on("connect", (socket) => {
-  socket.emit("ping", "PING");
+  const player = getOrAddPlayer(socket.id);
+  console.log(`${player.id} connected`);
 
-  socket.on("pong", (msg) => console.log(msg));
+  socket.on("disconnect", () => {
+    console.log(`${player.id} disconnected`);
+  });
 });
