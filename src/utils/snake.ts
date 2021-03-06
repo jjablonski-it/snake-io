@@ -1,7 +1,11 @@
 import { Direction, OptionalSnake, Snake, TurnDirection } from "../types";
+import { SIZE } from "./constants";
+import { randRange } from "./helpers";
+
+const { width, height } = SIZE;
 
 export const createSnake = ({
-  head = { x: 0, y: 0 },
+  head = { x: randRange(width), y: randRange(height) },
   segments = [],
   direction = Direction.Up,
   length = 0,
