@@ -1,7 +1,12 @@
 import { Direction, TurnDirection, Vector } from "../types";
 import { SIZE } from "./constants";
 import { getState } from "./game";
-import { getRealSize, randomVectorInRange, vectorEquals } from "./helpers";
+import {
+  getRealSize,
+  randomVectorInRange,
+  vectorEquals,
+  wrapBounds,
+} from "./helpers";
 
 export class Snake {
   head: Vector;
@@ -36,20 +41,22 @@ export class Snake {
   }
 
   forward() {
+    const newPost = { ...this.head };
     switch (this.direction) {
       case Direction.Up:
-        this.head.y--;
+        newPost.y--;
         break;
       case Direction.Right:
-        this.head.x++;
+        newPost.x++;
         break;
       case Direction.Down:
-        this.head.y++;
+        newPost.y++;
         break;
       case Direction.Left:
-        this.head.x--;
+        newPost.x--;
         break;
     }
+    this.head = wrapBounds(newPost);
     this.checkCollision();
   }
 
