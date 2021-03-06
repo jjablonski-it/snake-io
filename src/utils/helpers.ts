@@ -20,9 +20,9 @@ export const getRealSize = (): Vector => ({
 
 export const wrapBounds = (vector: Vector) => {
   const { x, y } = getRealSize();
-  if (vector.x > x) vector.x = 0;
-  else if (vector.x < 0) vector.x = x;
-  if (vector.y > y) vector.y = 0;
-  else if (vector.y < 0) vector.y = y;
+  if (vector.x >= x) vector.x = 0;
+  else if (vector.x < 0) vector.x = x - 1;
+  if (vector.y >= y) vector.y = 0;
+  else if (vector.y < 0) vector.y = y - 1;
   return vector;
 };
