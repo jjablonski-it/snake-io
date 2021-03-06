@@ -4,9 +4,14 @@ import { SCALE } from "../utils/constants";
 import "./style.css";
 
 let socket = io();
+let socketId = "";
 const canvas = document.querySelector("canvas");
 const ctx = canvas?.getContext("2d");
 ctx?.scale(...SCALE);
+
+socket.on("connect", function () {
+  socketId = socket.id;
+});
 
 socket.on("update", (data: State) => {
   console.log(data);
@@ -24,10 +29,15 @@ window.addEventListener("keydown", (e) => {
 const draw = (data: State, ctx: CanvasRenderingContext2D) => {
   ctx.clearRect(0, 0, 50, 50);
   data.players.forEach((p) => {
-    const { snake } = p;
+    const { id, snake } = p;
+    const self = id === socketId;
+
     const {
       head: { x, y },
     } = snake;
+
+    if (self) ctx.fillStyle = "red";
+    else ctx.fillStyle = "black";
     ctx.fillRect(x, y, 1, 1);
   });
 };
