@@ -1,6 +1,6 @@
 import { Direction, TurnDirection, Vector } from "../types";
 import { SIZE } from "./constants";
-import { getState } from "./game";
+import { generateFriut, getState } from "./game";
 import { randomVectorInBounds, vectorEquals, wrapBounds } from "./helpers";
 
 export class Snake {
@@ -14,6 +14,7 @@ export class Snake {
     this.direction = direction;
     this.length = length;
     console.log(this.head);
+    this.grow();
   }
 
   turn(turn: TurnDirection) {
@@ -46,18 +47,38 @@ export class Snake {
         newPost.x--;
         break;
     }
+
+    for (let i = this.segments.length - 1; i >= 0; i--) {
+      if (i > 0) {
+        this.segments[i] = { ...this.segments[i - 1] };
+      } else {
+        this.segments[i] = { ...this.head };
+      }
+    }
+
     this.head = wrapBounds(newPost);
     this.checkCollision();
   }
 
-  private consume() {}
+  grow() {
+    this.length++;
+    this.segments.push({ ...this.head });
+  }
+
+  consume() {
+    this.grow();
+    generateFriut();
+  }
 
   checkCollision(): boolean {
     const { fruit, players } = getState();
     const { width, height } = SIZE;
     const { x, y } = this.head;
     if (x === width || y === height || x === 0 || y === 0) return true;
-    if (vectorEquals(fruit, this.head)) return true;
+    if (vectorEquals(fruit, this.head)) {
+      this.consume();
+      return true;
+    }
     const snakes = players
       .map((player) => player.snake)
       .filter((snake) => snake !== this);

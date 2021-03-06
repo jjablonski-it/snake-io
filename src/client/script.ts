@@ -46,6 +46,10 @@ const draw = (data: State, ctx: CanvasRenderingContext2D) => {
     if (self) ctx.fillStyle = "red";
     else ctx.fillStyle = "black";
     ctx.fillRect(x, y, 1, 1);
+
+    p.snake.segments.forEach((s) => {
+      ctx.fillRect(s.x, s.y, 1, 1);
+    });
   });
 
   ctx.fillStyle = "green";
