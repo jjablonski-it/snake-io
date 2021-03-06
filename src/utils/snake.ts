@@ -1,5 +1,4 @@
 import { Direction, TurnDirection, Vector } from "../types";
-import { SIZE } from "./constants";
 import { generateFriut, getState } from "./game";
 import { randomVectorInBounds, vectorEquals, wrapBounds } from "./helpers";
 
@@ -72,9 +71,6 @@ export class Snake {
 
   checkCollision(): boolean {
     const { fruit, players } = getState();
-    const { width, height } = SIZE;
-    const { x, y } = this.head;
-    if (x === width || y === height || x === 0 || y === 0) return true;
     if (vectorEquals(fruit, this.head)) {
       this.consume();
       return true;
