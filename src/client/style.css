@@ -6,3 +6,7 @@
 body {
   background-color: rgb(41, 41, 41);
 }
+
+canvas {
+  background-color: rgb(214, 214, 214);
+}
