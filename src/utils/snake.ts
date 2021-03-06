@@ -1,16 +1,15 @@
 import { Direction, TurnDirection, Vector } from "../types";
 import { SIZE } from "./constants";
 import { getState } from "./game";
-import { randRange, vectorEquals } from "./helpers";
+import { getRealSize, randomVectorInRange, vectorEquals } from "./helpers";
 
-const { width, height } = SIZE;
 export class Snake {
   head: Vector;
   segments: Vector[];
   length: number;
   direction: Direction;
   constructor({
-    head = { x: randRange(width), y: randRange(height) },
+    head = randomVectorInRange(getRealSize()),
     segments = [],
     direction = Direction.Up,
     length = 0,
@@ -19,9 +18,10 @@ export class Snake {
     this.segments = segments;
     this.direction = direction;
     this.length = length;
+    console.log(this.head);
   }
 
-  public turn(turn: TurnDirection) {
+  turn(turn: TurnDirection) {
     let newDirection: Direction | null = null;
     if (turn === TurnDirection.Left) {
       newDirection = this.direction - 1;
@@ -35,7 +35,7 @@ export class Snake {
     this.direction = newDirection;
   }
 
-  public forward() {
+  forward() {
     switch (this.direction) {
       case Direction.Up:
         this.head.y--;
@@ -50,9 +50,10 @@ export class Snake {
         this.head.x--;
         break;
     }
+    this.checkCollision();
   }
 
-  public checkCollision(): boolean {
+  checkCollision(): boolean {
     const { fruit, players } = getState();
     const { width, height } = SIZE;
     const { x, y } = this.head;

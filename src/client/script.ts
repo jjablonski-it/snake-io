@@ -1,13 +1,18 @@
 import io from "socket.io-client";
 import { State, TurnDirection } from "../types";
-import { SCALE } from "../utils/constants";
+import { SCALE, SIZE } from "../utils/constants";
 import "./style.css";
 
 let socket = io();
 let socketId = "";
 const canvas = document.querySelector("canvas");
 const ctx = canvas?.getContext("2d");
-ctx?.scale(...SCALE);
+
+if (ctx) {
+  ctx.canvas.width = SIZE.width;
+  ctx.canvas.height = SIZE.height;
+  ctx.scale(SCALE, SCALE);
+}
 
 socket.on("connect", function () {
   socketId = socket.id;
