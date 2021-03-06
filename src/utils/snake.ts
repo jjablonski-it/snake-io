@@ -1,6 +1,7 @@
 import { Direction, OptionalSnake, Snake, TurnDirection } from "../types";
 import { SIZE } from "./constants";
-import { randRange } from "./helpers";
+import { getState } from "./game";
+import { randRange, vectorEquals } from "./helpers";
 
 const { width, height } = SIZE;
 
@@ -43,6 +44,21 @@ export const createSnake = ({
           this.head.x--;
           break;
       }
+    },
+    checkCollision() {
+      const { fruit, players } = getState();
+      const { width, height } = SIZE;
+      const { x, y } = this.head;
+      if (x === width || y === height || x === 0 || y === 0) return true;
+      if (vectorEquals(fruit, this.head)) return true;
+      const snakes = players
+        .map((player) => player.snake)
+        .filter((snake) => snake !== this);
+      return snakes.some(
+        (snake) =>
+          vectorEquals(snake.head, this.head) ||
+          snake.segments.some((segment) => vectorEquals(segment, this.head))
+      );
     },
   };
 };

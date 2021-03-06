@@ -9,7 +9,11 @@ export const initGame = (io: Server) => {
   state.players = getPlayers();
 
   const main = () => {
-    state.players.forEach((p) => p.snake.forward());
+    state.players.forEach((p) => {
+      p.snake.forward();
+      if (p.snake.checkCollision()) console.log("collision!");
+    });
+
     io.emit("update", state);
   };
 
@@ -21,3 +25,5 @@ export const handlePlayer = (player: Player, socket: Socket, _io: Server) => {
     player.snake.turn(turn);
   });
 };
+
+export const getState = () => state;

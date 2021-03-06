@@ -26,6 +26,7 @@ export interface Snake {
   direction: Direction;
   forward: () => void;
   turn: (props: TurnDirection) => void;
+  checkCollision: () => boolean;
 }
 
 export type OptionalSnake = Optional<Snake>;
