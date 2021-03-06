@@ -2,7 +2,7 @@ import express from "express";
 import { Server } from "socket.io";
 import { PORT } from "./utils/constants";
 import { handlePlayer, initGame } from "./utils/game";
-import { getOrAddPlayer, getPlayers, removePlayer } from "./utils/players";
+import { getOrAddPlayer, removePlayer } from "./utils/players";
 const socket = require("socket.io");
 
 const app = express();
@@ -16,10 +16,6 @@ const io: Server = socket(server);
 io.on("connect", (socket) => {
   const player = getOrAddPlayer(socket.id);
   console.log(`${player.id} connected`);
-  console.log(
-    "players",
-    getPlayers().map((p) => p.id)
-  );
 
   handlePlayer(player, socket, io);
 

@@ -16,10 +16,7 @@ export const initGame = (io: Server) => {
 };
 
 export const handlePlayer = (player: Player, socket: Socket, _io: Server) => {
-  socket.on("turnL", () => {
-    player.snake.turn(TurnDirection.Left);
-  });
-  socket.on("turnR", () => {
-    player.snake.turn(TurnDirection.Right);
+  socket.on("turn", (turn: TurnDirection) => {
+    player.snake.turn(turn);
   });
 };

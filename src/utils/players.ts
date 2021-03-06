@@ -1,5 +1,5 @@
 import { Player } from "../types";
-import { snake } from "./snake";
+import { createSnake } from "./snake";
 
 const players: Player[] = [];
 
@@ -9,7 +9,7 @@ export const getOrAddPlayer = (id: Player["id"]) => {
   const player = players.find((p) => p.id === id);
   if (player) return player;
 
-  const newPlayer: Player = { id, snake: snake() };
+  const newPlayer: Player = { id, snake: createSnake() };
   players.push(newPlayer);
   return newPlayer;
 };

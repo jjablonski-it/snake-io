@@ -1,36 +1,43 @@
-import { Direction, OptionalSnake, Snake } from "../types";
+import { Direction, OptionalSnake, Snake, TurnDirection } from "../types";
 
-export const snake = ({
+export const createSnake = ({
   head = { x: 0, y: 0 },
   segments = [],
   direction = Direction.Up,
   length = 0,
-}: OptionalSnake = {}): Snake => {
-  const forward = () => {
-    switch (direction) {
+}: OptionalSnake = {}): Snake => ({
+  head,
+  segments,
+  direction,
+  length,
+  turn(turn: TurnDirection) {
+    let newDirection: Direction | null = null;
+    if (turn === TurnDirection.Left) {
+      newDirection = this.direction - 1;
+    } else {
+      newDirection = this.direction + 1;
+    }
+
+    if (newDirection > Direction.Left) newDirection = Direction.Up;
+    else if (newDirection < Direction.Up) newDirection = Direction.Left;
+
+    this.direction = newDirection;
+    console.log(this.direction);
+  },
+  forward() {
+    switch (this.direction) {
       case Direction.Up:
-        head.y--;
+        this.head.y--;
         break;
       case Direction.Right:
-        head.x++;
+        this.head.x++;
         break;
       case Direction.Down:
-        head.y++;
+        this.head.y++;
         break;
       case Direction.Left:
-        head.x--;
+        this.head.x--;
         break;
     }
-  };
-
-  const turn = () => {};
-
-  return {
-    head,
-    segments,
-    direction,
-    length,
-    forward,
-    turn,
-  };
-};
+  },
+});
