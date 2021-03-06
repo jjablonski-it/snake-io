@@ -32,8 +32,10 @@ window.addEventListener("keydown", (e) => {
 });
 
 const draw = (data: State, ctx: CanvasRenderingContext2D) => {
+  const { fruit, players } = data;
   ctx.clearRect(0, 0, 50, 50);
-  data.players.forEach((p) => {
+
+  players.forEach((p) => {
     const { id, snake } = p;
     const self = id === socketId;
 
@@ -45,4 +47,7 @@ const draw = (data: State, ctx: CanvasRenderingContext2D) => {
     else ctx.fillStyle = "black";
     ctx.fillRect(x, y, 1, 1);
   });
+
+  ctx.fillStyle = "green";
+  ctx.fillRect(fruit.x, fruit.y, 1, 1);
 };
