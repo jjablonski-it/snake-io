@@ -1,10 +1,10 @@
 import { Server, Socket } from "socket.io";
 import { Player, State, TurnDirection } from "../types";
 import { DELAY } from "./constants";
-import { getRealSize, randomVectorInRange } from "./helpers";
+import { randomVectorInBounds } from "./helpers";
 import { getPlayers } from "./players";
 
-const state: State = { players: [], fruit: { x: 0, y: 0 } };
+const state: State = { players: [], fruit: randomVectorInBounds() };
 
 export const initGame = (io: Server) => {
   state.players = getPlayers();
@@ -27,7 +27,7 @@ export const handlePlayer = (player: Player, socket: Socket, _io: Server) => {
 };
 
 export const generateFriut = () => {
-  state.fruit = randomVectorInRange(getRealSize());
+  state.fruit = randomVectorInBounds();
 };
 
 export const getState = () => state;

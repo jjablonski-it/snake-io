@@ -26,3 +26,5 @@ export const wrapBounds = (vector: Vector) => {
   else if (vector.y < 0) vector.y = y - 1;
   return vector;
 };
+
+export const randomVectorInBounds = () => randomVectorInRange(getRealSize());
