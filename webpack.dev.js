@@ -5,7 +5,7 @@ const { nodeConfig, webConfig } = require("./webpack.common");
 
 const config = {
   mode: "development",
-  devtool: "inline-source-map",
+  devtool: "source-map",
 };
 
 const node = merge(nodeConfig, {
