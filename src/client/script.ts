@@ -22,6 +22,7 @@ window.addEventListener("keydown", (e) => {
 });
 
 const draw = (data: State, ctx: CanvasRenderingContext2D) => {
+  ctx.clearRect(0, 0, 50, 50);
   data.players.forEach((p) => {
     const { snake } = p;
     const {
