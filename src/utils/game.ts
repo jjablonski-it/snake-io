@@ -9,6 +9,7 @@ export const initGame = (io: Server) => {
   state.players = getPlayers();
 
   const main = () => {
+    state.players.forEach((p) => p.snake.forward());
     io.emit("update", state);
   };
 

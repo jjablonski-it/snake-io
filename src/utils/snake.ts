@@ -26,7 +26,6 @@ export const createSnake = ({
     else if (newDirection < Direction.Up) newDirection = Direction.Left;
 
     this.direction = newDirection;
-    console.log(this.direction);
   },
   forward() {
     switch (this.direction) {
