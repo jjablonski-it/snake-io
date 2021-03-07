@@ -1,4 +1,4 @@
-import { Direction, TurnDirection, Vector } from "../types";
+import { Direction, Vector } from "../types";
 import { TAIL_LENGTH } from "./constants";
 import { generateFriut, getState } from "./game";
 import { randomVectorInBounds, vectorEquals, wrapBounds } from "./helpers";
@@ -15,18 +15,13 @@ export class Snake {
     this.setLength(TAIL_LENGTH);
   }
 
-  turn(turn: TurnDirection) {
-    let newDirection: Direction | null = null;
-    if (turn === TurnDirection.Left) {
-      newDirection = this.direction - 1;
-    } else {
-      newDirection = this.direction + 1;
-    }
+  turn(direction: Direction) {
+    // 2 key direction
+    // if (newDirection > Direction.Left) newDirection = Direction.Up;
+    // else if (newDirection < Direction.Up) newDirection = Direction.Left;
+    console.log(direction);
 
-    if (newDirection > Direction.Left) newDirection = Direction.Up;
-    else if (newDirection < Direction.Up) newDirection = Direction.Left;
-
-    this.direction = newDirection;
+    this.direction = direction;
   }
 
   forward() {
@@ -65,12 +60,12 @@ export class Snake {
     this.segments.splice(to);
   }
 
-  grow() {
-    this.segments.push({ ...this.head });
+  grow(n: number = 1) {
+    this.segments.push(...new Array(n).fill({ ...this.head }));
   }
 
   consume() {
-    this.grow();
+    this.grow(5);
     generateFriut();
   }
 

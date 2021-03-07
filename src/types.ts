@@ -1,15 +1,10 @@
 import { Snake } from "./utils/snake";
 
 export enum Direction {
-  Up = 1,
-  Right,
-  Down,
-  Left,
-}
-
-export enum TurnDirection {
-  Left,
-  Right,
+  Up = "ArrowUp",
+  Right = "ArrowRight",
+  Down = "ArrowDown",
+  Left = "ArrowLeft",
 }
 export interface Vector {
   x: number;

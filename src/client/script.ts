@@ -1,5 +1,5 @@
 import io from "socket.io-client";
-import { State, TurnDirection } from "../types";
+import { Direction, State } from "../types";
 import { SCALE, SIZE } from "../utils/constants";
 import "./style.css";
 
@@ -24,10 +24,9 @@ socket.on("update", (data: State) => {
 });
 
 window.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowLeft") {
-    socket.emit("turn", TurnDirection.Left);
-  } else if (e.key === "ArrowRight") {
-    socket.emit("turn", TurnDirection.Right);
+  const direction = e.key as Direction;
+  if (direction && Object.values(Direction).includes(direction)) {
+    socket.emit("turn", direction);
   }
 });
 
