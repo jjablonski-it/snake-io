@@ -1,19 +1,18 @@
 import { Direction, TurnDirection, Vector } from "../types";
+import { TAIL_LENGTH } from "./constants";
 import { generateFriut, getState } from "./game";
 import { randomVectorInBounds, vectorEquals, wrapBounds } from "./helpers";
 
 export class Snake {
   head: Vector;
   segments: Vector[];
-  length: number;
   direction: Direction;
-  constructor({ segments = [], direction = Direction.Up, length = 0 } = {}) {
+  constructor({ segments = [], direction = Direction.Up } = {}) {
     this.head = randomVectorInBounds();
     this.segments = segments;
     this.direction = direction;
-    this.length = length;
     console.log(this.head);
-    this.grow();
+    this.setLength(TAIL_LENGTH);
   }
 
   turn(turn: TurnDirection) {
@@ -56,11 +55,17 @@ export class Snake {
     }
 
     this.head = wrapBounds(newPost);
-    this.checkCollision();
+  }
+
+  setLength(n: number) {
+    this.segments = new Array(n).fill({ ...this.head });
+  }
+
+  trimSegments(to: number) {
+    this.segments.splice(to);
   }
 
   grow() {
-    this.length++;
     this.segments.push({ ...this.head });
   }
 
@@ -78,10 +83,30 @@ export class Snake {
     const snakes = players
       .map((player) => player.snake)
       .filter((snake) => snake !== this);
-    return snakes.some(
-      (snake) =>
-        vectorEquals(snake.head, this.head) ||
-        snake.segments.some((segment) => vectorEquals(segment, this.head))
+
+    const headToHeadCollision = snakes.find((snake) =>
+      vectorEquals(snake.head, this.head)
     );
+
+    if (headToHeadCollision) {
+      if (headToHeadCollision.getLength() >= this.getLength())
+        this.setLength(TAIL_LENGTH);
+      return true;
+    }
+
+    const bodyCollision = snakes.some((snake) =>
+      snake.segments.some((segment) => vectorEquals(segment, this.head))
+    );
+
+    if (bodyCollision) {
+      this.setLength(TAIL_LENGTH);
+      return true;
+    }
+
+    return false;
+  }
+
+  getLength() {
+    return this.segments.length;
   }
 }

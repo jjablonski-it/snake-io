@@ -11,6 +11,7 @@ export const initGame = (io: Server) => {
 
   const main = () => {
     state.players.forEach((p) => {
+      p.snake.checkCollision();
       p.snake.forward();
     });
 
