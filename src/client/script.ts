@@ -1,6 +1,7 @@
 import io from "socket.io-client";
 import { Direction, State } from "../types";
-import { SCALE } from "../utils/constants";
+import { SCALE, SIZE } from "../utils/constants";
+import { clamp, getRealSize } from "../utils/helpers";
 import "./style.css";
 
 let scaleModifier = 1;
@@ -48,14 +49,18 @@ const draw = (data: State, ctx: CanvasRenderingContext2D) => {
   const snake = player?.snake;
   if (!snake) return;
 
-  //Clamp the camera position to the world bounds while centering the camera around the player
-  // var camX = clamp(-player.x + canvas.width/2, yourWorld.minX, yourWorld.maxX - canvas.width);
-  // var camY = clamp(-player.y + canvas.height/2, yourWorld.minY, yourWorld.maxY - canvas.height);
-
-  ctx.translate(
+  const cameraX = clamp(
     scaledSize.width / 2 - snake.head.x,
-    scaledSize.height / 2 - snake.head.y
+    0,
+    getRealSize().x - scaledSize.width
   );
+  const cameraY = clamp(
+    scaledSize.height / 2 - snake.head.y,
+    0,
+    getRealSize().y - scaledSize.height
+  );
+
+  ctx.translate(cameraX, cameraY);
 
   //Draw everything
 
@@ -79,4 +84,7 @@ const draw = (data: State, ctx: CanvasRenderingContext2D) => {
 
   ctx.fillStyle = "green";
   ctx.fillRect(fruit.x, fruit.y, 1, 1);
+
+  ctx.lineWidth = 0.25;
+  ctx.strokeRect(0, 0, getRealSize().x, getRealSize().y);
 };

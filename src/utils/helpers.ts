@@ -30,10 +30,17 @@ export const wrapBounds = (vector: Vector) => {
 export const randomVectorInBounds = () => randomVectorInRange(getRealSize());
 
 export const clamp = (value: number, min: number, max: number) => {
+  console.log(value, min, max);
+  return value;
+
   if (value < min) {
+    console.log("min");
+
     return min;
   } else if (value > max) {
+    console.log("max");
+
     return max;
   }
-  return value;
+  console.log("value");
 };
