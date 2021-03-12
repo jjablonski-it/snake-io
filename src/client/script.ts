@@ -49,16 +49,24 @@ const draw = (data: State, ctx: CanvasRenderingContext2D) => {
   const snake = player?.snake;
   if (!snake) return;
 
-  const cameraX = clamp(
-    scaledSize.width / 2 - snake.head.x,
-    0,
-    getRealSize().x - scaledSize.width
-  );
-  const cameraY = clamp(
-    scaledSize.height / 2 - snake.head.y,
-    0,
-    getRealSize().y - scaledSize.height
-  );
+  let cameraX = scaledSize.width / 2 - snake.head.x;
+  let cameraY = scaledSize.height / 2 - snake.head.y;
+
+  console.log("value", cameraX);
+
+  if (snake.head.x < scaledSize.width / 2) {
+    console.log("min", cameraX);
+    cameraX = 0;
+  }
+
+  if (snake.head.x > getRealSize().x - scaledSize.width / 2) {
+    cameraX = -getRealSize().x + scaledSize.width;
+    console.log("max", cameraX);
+  }
+
+  if (snake.head.y < scaledSize.height / 2) cameraX = 0;
+  if (snake.head.y > getRealSize().y - scaledSize.height / 2)
+    cameraY = -getRealSize().y + scaledSize.height;
 
   ctx.translate(cameraX, cameraY);
 
