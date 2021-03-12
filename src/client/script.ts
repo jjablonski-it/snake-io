@@ -49,28 +49,18 @@ const draw = (data: State, ctx: CanvasRenderingContext2D) => {
   const snake = player?.snake;
   if (!snake) return;
 
-  let cameraX = scaledSize.width / 2 - snake.head.x;
-  let cameraY = scaledSize.height / 2 - snake.head.y;
-
-  console.log("value", cameraX);
-
-  if (snake.head.x < scaledSize.width / 2) {
-    console.log("min", cameraX);
-    cameraX = 0;
-  }
-
-  if (snake.head.x > getRealSize().x - scaledSize.width / 2) {
-    cameraX = -getRealSize().x + scaledSize.width;
-    console.log("max", cameraX);
-  }
-
-  if (snake.head.y < scaledSize.height / 2) cameraX = 0;
-  if (snake.head.y > getRealSize().y - scaledSize.height / 2)
-    cameraY = -getRealSize().y + scaledSize.height;
+  let cameraX = clamp(
+    scaledSize.width / 2 - snake.head.x,
+    -scaledSize.width,
+    0
+  );
+  let cameraY = clamp(
+    scaledSize.height / 2 - snake.head.y,
+    -scaledSize.height,
+    0
+  );
 
   ctx.translate(cameraX, cameraY);
-
-  //Draw everything
 
   players.forEach((p) => {
     const { id, snake } = p;

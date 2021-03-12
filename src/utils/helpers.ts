@@ -31,7 +31,6 @@ export const randomVectorInBounds = () => randomVectorInRange(getRealSize());
 
 export const clamp = (value: number, min: number, max: number) => {
   console.log(value, min, max);
-  return value;
 
   if (value < min) {
     console.log("min");
@@ -43,4 +42,5 @@ export const clamp = (value: number, min: number, max: number) => {
     return max;
   }
   console.log("value");
+  return value;
 };
