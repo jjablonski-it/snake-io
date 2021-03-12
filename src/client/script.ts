@@ -1,7 +1,16 @@
 import io from "socket.io-client";
 import { Direction, State } from "../types";
-import { SCALE, SIZE } from "../utils/constants";
+import { SCALE } from "../utils/constants";
 import "./style.css";
+
+let scaleModifier = 1;
+const getScale = (): number => SCALE / scaleModifier;
+
+const canvasSize = { width: 500, height: 500 };
+const scaledSize = {
+  width: canvasSize.width / getScale(),
+  height: canvasSize.height / getScale(),
+};
 
 let socket = io();
 let socketId = "";
@@ -9,9 +18,9 @@ const canvas = document.querySelector("canvas");
 const ctx = canvas?.getContext("2d");
 
 if (ctx) {
-  ctx.canvas.width = SIZE.width;
-  ctx.canvas.height = SIZE.height;
-  ctx.scale(SCALE, SCALE);
+  const { width, height } = canvasSize;
+  ctx.canvas.width = width;
+  ctx.canvas.height = height;
 }
 
 socket.on("connect", function () {
@@ -32,7 +41,23 @@ window.addEventListener("keydown", (e) => {
 
 const draw = (data: State, ctx: CanvasRenderingContext2D) => {
   const { fruit, players } = data;
-  ctx.clearRect(0, 0, 50, 50);
+  ctx.setTransform(getScale(), 0, 0, getScale(), 0, 0);
+  ctx.clearRect(0, 0, scaledSize.width, scaledSize.height);
+
+  const player = players.find((p) => p.id === socketId);
+  const snake = player?.snake;
+  if (!snake) return;
+
+  //Clamp the camera position to the world bounds while centering the camera around the player
+  // var camX = clamp(-player.x + canvas.width/2, yourWorld.minX, yourWorld.maxX - canvas.width);
+  // var camY = clamp(-player.y + canvas.height/2, yourWorld.minY, yourWorld.maxY - canvas.height);
+
+  ctx.translate(
+    scaledSize.width / 2 - snake.head.x,
+    scaledSize.height / 2 - snake.head.y
+  );
+
+  //Draw everything
 
   players.forEach((p) => {
     const { id, snake } = p;

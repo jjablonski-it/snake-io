@@ -9,4 +9,6 @@ body {
 
 canvas {
   background-color: rgb(214, 214, 214);
+  width: 500px;
+  height: 500px;
 }

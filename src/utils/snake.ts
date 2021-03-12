@@ -50,6 +50,7 @@ export class Snake {
     }
 
     this.head = wrapBounds(newPost);
+    console.log(this.head);
   }
 
   setLength(n: number) {
