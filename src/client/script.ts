@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 import { Direction, State } from "../types";
-import { GRID_P, SCALE, SIZE } from "../utils/constants";
-import { clamp, getRealSize } from "../utils/helpers";
+import { GRID_P, SCALE, WORLD_SIZE } from "../utils/constants";
+import { clamp, getScaledWorldSize } from "../utils/helpers";
 import "./style.css";
 
 let scaleModifier = 1;
@@ -43,7 +43,7 @@ window.addEventListener("keydown", (e) => {
 const draw = (data: State, ctx: CanvasRenderingContext2D) => {
   const { fruit, players } = data;
   ctx.setTransform(getScale(), 0, 0, getScale(), 0, 0);
-  ctx.clearRect(0, 0, getRealSize().x, getRealSize().y);
+  ctx.clearRect(0, 0, getScaledWorldSize().x, getScaledWorldSize().y);
 
   const player = players.find((p) => p.id === socketId);
   const snake = player?.snake;
@@ -51,12 +51,12 @@ const draw = (data: State, ctx: CanvasRenderingContext2D) => {
 
   let cameraX = clamp(
     scaledSize().width / 2 - snake.head.x,
-    scaledSize().width - getRealSize().x,
+    scaledSize().width - getScaledWorldSize().x,
     0
   );
   let cameraY = clamp(
     scaledSize().height / 2 - snake.head.y,
-    scaledSize().height - getRealSize().y,
+    scaledSize().height - getScaledWorldSize().y,
     0
   );
 
@@ -68,14 +68,14 @@ const draw = (data: State, ctx: CanvasRenderingContext2D) => {
   ctx.lineWidth = 0.01;
   ctx.beginPath();
 
-  for (let x = 0; x < getRealSize().x; x += GRID_P) {
+  for (let x = 0; x < getScaledWorldSize().x; x += GRID_P) {
     ctx.moveTo(x, 0);
-    ctx.lineTo(x, getRealSize().y);
+    ctx.lineTo(x, getScaledWorldSize().y);
   }
 
-  for (let y = 0; y < getRealSize().y; y += GRID_P) {
+  for (let y = 0; y < getScaledWorldSize().y; y += GRID_P) {
     ctx.moveTo(0, y);
-    ctx.lineTo(getRealSize().x, y);
+    ctx.lineTo(getScaledWorldSize().x, y);
   }
   ctx.stroke();
 
@@ -100,5 +100,5 @@ const draw = (data: State, ctx: CanvasRenderingContext2D) => {
   ctx.fillStyle = "green";
   ctx.fillRect(fruit.x, fruit.y, 1, 1);
 
-  ctx.strokeRect(0, 0, getRealSize().x, getRealSize().y);
+  ctx.strokeRect(0, 0, getScaledWorldSize().x, getScaledWorldSize().y);
 };
