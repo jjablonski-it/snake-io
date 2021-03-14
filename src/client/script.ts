@@ -8,10 +8,10 @@ let scaleModifier = 1;
 const getScale = (): number => SCALE / scaleModifier;
 
 const canvasSize = { width: 500, height: 500 };
-const scaledSize = {
+const scaledSize = () => ({
   width: canvasSize.width / getScale(),
   height: canvasSize.height / getScale(),
-};
+});
 
 let socket = io();
 let socketId = "";
@@ -43,20 +43,20 @@ window.addEventListener("keydown", (e) => {
 const draw = (data: State, ctx: CanvasRenderingContext2D) => {
   const { fruit, players } = data;
   ctx.setTransform(getScale(), 0, 0, getScale(), 0, 0);
-  ctx.clearRect(0, 0, scaledSize.width, scaledSize.height);
+  ctx.clearRect(0, 0, scaledSize().width, scaledSize().height);
 
   const player = players.find((p) => p.id === socketId);
   const snake = player?.snake;
   if (!snake) return;
 
   let cameraX = clamp(
-    scaledSize.width / 2 - snake.head.x,
-    -scaledSize.width,
+    scaledSize().width / 2 - snake.head.x,
+    -scaledSize().width,
     0
   );
   let cameraY = clamp(
-    scaledSize.height / 2 - snake.head.y,
-    -scaledSize.height,
+    scaledSize().height / 2 - snake.head.y,
+    -scaledSize().height,
     0
   );
 
