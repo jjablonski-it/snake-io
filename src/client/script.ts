@@ -30,7 +30,7 @@ socket.on("connect", function () {
 
 socket.on("update", (data: State) => {
   console.log(data);
-  if (ctx) draw(data, ctx);
+  if (ctx) requestAnimationFrame(() => draw(data, ctx));
 });
 
 window.addEventListener("keydown", (e) => {
@@ -43,7 +43,7 @@ window.addEventListener("keydown", (e) => {
 const draw = (data: State, ctx: CanvasRenderingContext2D) => {
   const { fruit, players } = data;
   ctx.setTransform(getScale(), 0, 0, getScale(), 0, 0);
-  ctx.clearRect(0, 0, scaledSize().width, scaledSize().height);
+  ctx.clearRect(0, 0, getRealSize().x, getRealSize().y);
 
   const player = players.find((p) => p.id === socketId);
   const snake = player?.snake;
@@ -61,6 +61,23 @@ const draw = (data: State, ctx: CanvasRenderingContext2D) => {
   );
 
   ctx.translate(cameraX, cameraY);
+
+  // Draw
+
+  // Grid
+  ctx.lineWidth = 0.01;
+  ctx.beginPath();
+
+  for (let x = 0; x < getRealSize().x; x += 4) {
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, getRealSize().y);
+  }
+
+  for (let y = 0; y < getRealSize().y; y += 4) {
+    ctx.moveTo(0, y);
+    ctx.lineTo(getRealSize().x, y);
+  }
+  ctx.stroke();
 
   players.forEach((p) => {
     const { id, snake } = p;
@@ -83,6 +100,5 @@ const draw = (data: State, ctx: CanvasRenderingContext2D) => {
   ctx.fillStyle = "green";
   ctx.fillRect(fruit.x, fruit.y, 1, 1);
 
-  ctx.lineWidth = 0.25;
   ctx.strokeRect(0, 0, getRealSize().x, getRealSize().y);
 };
