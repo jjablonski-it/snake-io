@@ -51,12 +51,12 @@ const draw = (data: State, ctx: CanvasRenderingContext2D) => {
 
   let cameraX = clamp(
     scaledSize().width / 2 - snake.head.x,
-    -scaledSize().width,
+    scaledSize().width - getRealSize().x,
     0
   );
   let cameraY = clamp(
     scaledSize().height / 2 - snake.head.y,
-    -scaledSize().height,
+    scaledSize().height - getRealSize().y,
     0
   );
 
