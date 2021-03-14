@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 import { Direction, State } from "../types";
-import { SCALE, SIZE } from "../utils/constants";
+import { GRID_P, SCALE, SIZE } from "../utils/constants";
 import { clamp, getRealSize } from "../utils/helpers";
 import "./style.css";
 
@@ -68,12 +68,12 @@ const draw = (data: State, ctx: CanvasRenderingContext2D) => {
   ctx.lineWidth = 0.01;
   ctx.beginPath();
 
-  for (let x = 0; x < getRealSize().x; x += 4) {
+  for (let x = 0; x < getRealSize().x; x += GRID_P) {
     ctx.moveTo(x, 0);
     ctx.lineTo(x, getRealSize().y);
   }
 
-  for (let y = 0; y < getRealSize().y; y += 4) {
+  for (let y = 0; y < getRealSize().y; y += GRID_P) {
     ctx.moveTo(0, y);
     ctx.lineTo(getRealSize().x, y);
   }
