@@ -7,7 +7,7 @@ import "./style.css";
 let scaleModifier = 1;
 const getScale = (): number => SCALE / scaleModifier;
 
-const canvasSize = { width: 500, height: 500 };
+const canvasSize = { width: window.innerWidth, height: window.innerHeight };
 const scaledSize = () => ({
   width: canvasSize.width / getScale(),
   height: canvasSize.height / getScale(),

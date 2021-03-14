@@ -1,7 +1,7 @@
 // Server
 export const PORT = 3000;
 export const DELAY = 50;
-export const WORLD_SIZE = { width: 1000, height: 1000 };
+export const WORLD_SIZE = { width: 3000, height: 3000 };
 export const TAIL_LENGTH = 3;
 
 // Client
