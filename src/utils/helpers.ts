@@ -1,5 +1,6 @@
 import { Vector } from "../types";
-import { SCALE, WORLD_SIZE } from "./constants";
+import { SCALE } from "./constants";
+import { getState } from "./game";
 
 export const randRange = (range: number) => Math.floor(Math.random() * range);
 
@@ -14,12 +15,12 @@ export const vectorEquals = (a: Vector, b: Vector): boolean => {
 };
 
 export const getScaledWorldSize = (): Vector => ({
-  x: WORLD_SIZE * SCALE,
-  y: WORLD_SIZE * SCALE,
+  x: getState().worldSize * SCALE,
+  y: getState().worldSize * SCALE,
 });
 
 export const wrapBounds = (vector: Vector) => {
-  const x = WORLD_SIZE;
+  const x = getState().worldSize;
   const y = x;
   if (vector.x >= x) vector.x = 0;
   else if (vector.x < 0) vector.x = x - 1;
@@ -29,7 +30,7 @@ export const wrapBounds = (vector: Vector) => {
 };
 
 export const randomVectorInBounds = () =>
-  randomVectorInRange({ x: WORLD_SIZE, y: WORLD_SIZE });
+  randomVectorInRange({ x: getState().worldSize, y: getState().worldSize });
 
 export const clamp = (value: number, min: number, max: number) => {
   console.log(value, min, max);

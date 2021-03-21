@@ -1,12 +1,6 @@
 import { Direction, Vector } from "../types";
 import { LENGTH_PER_FRUIT, TAIL_LENGTH } from "./constants";
-import {
-  generateFriuts,
-  getChunkForVector,
-  getState,
-  removeFruit,
-  returnPoints,
-} from "./game";
+import { getChunkForVector, getState, returnPoints } from "./game";
 import { randomVectorInBounds, vectorEquals, wrapBounds } from "./helpers";
 
 export class Snake {
@@ -56,7 +50,7 @@ export class Snake {
     }
 
     this.head = wrapBounds(newPost);
-    console.log(this.head);
+    // console.log(this.head);
   }
 
   setLength(n: number) {
@@ -83,7 +77,7 @@ export class Snake {
   checkCollision(): boolean {
     const { players } = getState();
     const currentChunk = getChunkForVector(this.head);
-    console.log("currentChunk", currentChunk);
+    // console.log("currentChunk", currentChunk);
 
     if (!currentChunk) throw "No chunk for snake found";
 

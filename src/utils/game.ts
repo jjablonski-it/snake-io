@@ -21,16 +21,20 @@ const state: State = {
 
 export const initGame = (io: Server) => {
   state.players = getPlayers();
-  state.chunks = generateChunks();
+  generateChunks();
   generateFriuts();
 
   const main = () => {
+    state.worldSize = WORLD_SIZE + state.players.length * WORLD_SIZE_PER_PLAYER;
+    fixChunks();
+
+    // console.log(state.chunks.length);
+    // console.log(WORLD_SIZE + state.players.length * WORLD_SIZE_PER_PLAYER);
+
     state.players.forEach((p) => {
       p.snake.checkCollision();
       p.snake.forward();
     });
-
-    state.worldSize = WORLD_SIZE + state.players.length * WORLD_SIZE_PER_PLAYER;
 
     io.emit("update", state);
   };
@@ -44,23 +48,47 @@ export const handlePlayer = (player: Player, socket: Socket, _io: Server) => {
   });
 };
 
-const generateChunks = (): Chunk[] => {
-  const result: Chunk[] = [];
-
+const generateChunks = () => {
   const chunks = Math.ceil(WORLD_SIZE / CHUNK_SIZE);
   for (let i = 0; i < chunks; i++) {
     for (let j = 0; j < chunks; j++) {
-      result.push(new Chunk({ x: j * CHUNK_SIZE, y: i * CHUNK_SIZE }));
+      state.chunks.push(new Chunk({ x: j * CHUNK_SIZE, y: i * CHUNK_SIZE }));
     }
   }
-  return result;
 };
 
-// export const getFruits = (): Vector[] => {
-//   return state.chunks
-//     .filter((chunk) => chunk.isFruit())
-//     .map((chunk) => chunk.getFruitPoisition()!);
-// };
+const fixChunks = () => {
+  const currentChunks = Math.sqrt(state.chunks.length);
+  const proper = state.worldSize / CHUNK_SIZE;
+
+  if (proper > currentChunks) {
+    console.log("all chunks", state.chunks.length);
+
+    console.log("current", currentChunks);
+    console.log("proper", proper);
+    console.log("adding chunks");
+
+    for (let i = 0; i < proper; i++) {
+      for (let j = 0; j < proper; j++) {
+        if (i < currentChunks && j < currentChunks) continue;
+
+        const newChunk = new Chunk({
+          x: j * CHUNK_SIZE,
+          y: i * CHUNK_SIZE,
+        });
+        newChunk.generateFruit();
+        state.chunks.push(newChunk);
+        console.log(i, j);
+      }
+    }
+    return;
+  } else if (proper < currentChunks) {
+  }
+
+  state.chunks = state.chunks.filter(
+    (value, i, self) => self.indexOf(value) === i
+  );
+};
 
 export const generateFriuts = () => {
   state.chunks.forEach((chunk) => !chunk.isFruit() && chunk.generateFruit());
@@ -88,9 +116,9 @@ export const getChunkForVector = ({ x, y }: Vector): Chunk | undefined => {
 
 export const returnPoints = (snake: Snake) => {
   const points = (snake.getLength() - TAIL_LENGTH) / LENGTH_PER_FRUIT;
-  console.log("points to return", points);
-
   if (points <= 0) return;
+
+  console.log(`Generating ${points} fruits`);
 
   const emptyChunks = state.chunks.filter((chunk) => !chunk.isFruit());
 
