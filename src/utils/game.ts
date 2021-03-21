@@ -23,7 +23,7 @@ export const initGame = (io: Server) => {
     state.players.forEach((p) => {
       p.snake.checkCollision();
       p.snake.forward();
-      console.log(getChunks());
+      getChunks();
     });
 
     state.worldSize = WORLD_SIZE + state.players.length * WORLD_SIZE_PER_PLAYER;
@@ -41,15 +41,13 @@ export const handlePlayer = (player: Player, socket: Socket, _io: Server) => {
 
 export const generateFriuts = () => {};
 
-export const getChunks = (): Vector[][] => {
+export const getChunks = (): Vector[] => {
   const chunks = state.worldSize / CHUNK_SIZE;
-  console.log(chunks);
-
   return Array.from({ length: chunks }, (_, y) => {
     return Array.from({ length: chunks }, (_, x) => {
       return { x: x * CHUNK_SIZE, y: y * CHUNK_SIZE };
     });
-  });
+  }).reduce((acc, value) => acc.concat(value), []);
 };
 
 export const getState = () => state;
