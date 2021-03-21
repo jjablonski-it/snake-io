@@ -1,6 +1,6 @@
 import { Direction, Vector } from "../types";
 import { TAIL_LENGTH } from "./constants";
-import { generateFriut, getState } from "./game";
+import { generateFriuts, getState } from "./game";
 import { randomVectorInBounds, vectorEquals, wrapBounds } from "./helpers";
 
 export class Snake {
@@ -67,15 +67,18 @@ export class Snake {
 
   consume() {
     this.grow(5);
-    generateFriut();
+    generateFriuts();
   }
 
   checkCollision(): boolean {
-    const { fruit, players } = getState();
-    if (vectorEquals(fruit, this.head)) {
+    const { fruits, players } = getState();
+
+    const fruitToEat = fruits.find((fruit) => vectorEquals(fruit, this.head));
+    if (fruitToEat) {
       this.consume();
       return true;
     }
+
     const snakes = players
       .map((player) => player.snake)
       .filter((snake) => snake !== this);

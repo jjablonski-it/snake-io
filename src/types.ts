@@ -16,6 +16,6 @@ export interface Player {
 }
 export interface State {
   players: Player[];
-  fruit: Vector;
+  fruits: Vector[];
   worldSize: number;
 }

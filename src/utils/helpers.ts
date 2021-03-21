@@ -14,8 +14,8 @@ export const vectorEquals = (a: Vector, b: Vector): boolean => {
 };
 
 export const getScaledWorldSize = (): Vector => ({
-  x: WORLD_SIZE / SCALE,
-  y: WORLD_SIZE / SCALE,
+  x: WORLD_SIZE * SCALE,
+  y: WORLD_SIZE * SCALE,
 });
 
 export const wrapBounds = (vector: Vector) => {
