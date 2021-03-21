@@ -1,3 +1,4 @@
+import { Chunk } from "./utils/chunk";
 import { Snake } from "./utils/snake";
 
 export enum Direction {
@@ -16,6 +17,6 @@ export interface Player {
 }
 export interface State {
   players: Player[];
-  fruits: Vector[];
+  chunks: Chunk[];
   worldSize: number;
 }

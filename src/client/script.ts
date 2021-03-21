@@ -41,7 +41,7 @@ window.addEventListener("keydown", (e) => {
 });
 
 const draw = (data: State, ctx: CanvasRenderingContext2D) => {
-  const { fruits, players } = data;
+  const { chunks, players } = data;
   ctx.setTransform(getScale(), 0, 0, getScale(), 0, 0);
   ctx.clearRect(0, 0, getScaledWorldSize().x, getScaledWorldSize().y);
 
@@ -99,9 +99,12 @@ const draw = (data: State, ctx: CanvasRenderingContext2D) => {
 
   ctx.fillStyle = "green";
 
-  fruits.forEach((fruit) => {
-    ctx.fillRect(fruit.x, fruit.y, 1, 1);
-  });
+  chunks
+    .filter((chunk) => !!chunk.fruit)
+    .map((chunk) => chunk.fruit)
+    .forEach((fruit) => {
+      ctx.fillRect(fruit!.x, fruit!.y, 1, 1);
+    });
 
   ctx.strokeRect(0, 0, getScaledWorldSize().x, getScaledWorldSize().y);
 };

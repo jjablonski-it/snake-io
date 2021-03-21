@@ -1,31 +1,29 @@
-import { stat } from "node:fs";
 import { Server, Socket } from "socket.io";
 import { Direction, Player, State, Vector } from "../types";
+import { Chunk } from "./chunk";
 import {
   CHUNK_SIZE,
   DELAY,
   WORLD_SIZE,
   WORLD_SIZE_PER_PLAYER,
 } from "./constants";
-import { addVectors, randomVectorInRange } from "./helpers";
 import { getPlayers } from "./players";
 
 const state: State = {
   players: [],
-  fruits: [],
+  chunks: [],
   worldSize: WORLD_SIZE,
 };
 
 export const initGame = (io: Server) => {
   state.players = getPlayers();
+  state.chunks = generateChunks();
   generateFriuts();
 
   const main = () => {
     state.players.forEach((p) => {
       p.snake.checkCollision();
       p.snake.forward();
-      // getChunks();
-      console.log(state.fruits);
     });
 
     state.worldSize = WORLD_SIZE + state.players.length * WORLD_SIZE_PER_PLAYER;
@@ -42,29 +40,44 @@ export const handlePlayer = (player: Player, socket: Socket, _io: Server) => {
   });
 };
 
-export const getChunks = (): Vector[] => {
-  const chunks = state.worldSize / CHUNK_SIZE;
+const generateChunks = (): Chunk[] => {
+  const result: Chunk[] = [];
 
-  return Array.from({ length: chunks }, (_, y) => {
-    return Array.from({ length: chunks }, (_, x) => {
-      return { x: x * CHUNK_SIZE, y: y * CHUNK_SIZE };
-    });
-  }).reduce((acc, value) => acc.concat(value), []);
+  const chunks = Math.ceil(WORLD_SIZE / CHUNK_SIZE);
+  for (let i = 0; i < chunks; i++) {
+    for (let j = 0; j < chunks; j++) {
+      result.push(new Chunk({ x: j * CHUNK_SIZE, y: i * CHUNK_SIZE }));
+    }
+  }
+  return result;
 };
+
+// export const getFruits = (): Vector[] => {
+//   return state.chunks
+//     .filter((chunk) => chunk.isFruit())
+//     .map((chunk) => chunk.getFruitPoisition()!);
+// };
 
 export const generateFriuts = () => {
-  const chunks = getChunks();
-
-  console.log("chunks", chunks);
-  chunks.forEach((chunk) => {
-    const fruit = randomVectorInRange({ x: CHUNK_SIZE, y: CHUNK_SIZE });
-    state.fruits.push(addVectors(fruit, chunk));
-  });
-  state.fruits.push({ x: 0, y: 0 });
+  state.chunks.forEach((chunk) => !chunk.isFruit() && chunk.generateFruit());
 };
 
-export const removeFruit = (fruit: Vector) => {
-  state.fruits = state.fruits.filter((f) => f !== fruit);
+export const removeFruit = (chunk: Chunk) => {
+  chunk.removeFruit();
 };
 
 export const getState = () => state;
+
+export const getChunkForVector = ({ x, y }: Vector): Chunk | undefined => {
+  return state.chunks.find((chunk) => {
+    const bounds = chunk.getBounds();
+    if (
+      x >= bounds.minX &&
+      x < bounds.maxX &&
+      y >= bounds.minY &&
+      y < bounds.maxY
+    ) {
+      return true;
+    }
+  });
+};
