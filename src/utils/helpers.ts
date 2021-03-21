@@ -19,7 +19,8 @@ export const getScaledWorldSize = (): Vector => ({
 });
 
 export const wrapBounds = (vector: Vector) => {
-  const { x, y } = getScaledWorldSize();
+  const x = WORLD_SIZE;
+  const y = x;
   if (vector.x >= x) vector.x = 0;
   else if (vector.x < 0) vector.x = x - 1;
   if (vector.y >= y) vector.y = 0;
@@ -28,7 +29,7 @@ export const wrapBounds = (vector: Vector) => {
 };
 
 export const randomVectorInBounds = () =>
-  randomVectorInRange(getScaledWorldSize());
+  randomVectorInRange({ x: WORLD_SIZE, y: WORLD_SIZE });
 
 export const clamp = (value: number, min: number, max: number) => {
   console.log(value, min, max);

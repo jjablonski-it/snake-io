@@ -1,5 +1,5 @@
 import { Vector } from "../types";
-import { CHUNK_SIZE } from "./constants";
+import { CHUNK_SIZE, WORLD_SIZE } from "./constants";
 import { randomVectorInRange } from "./helpers";
 
 export class Chunk {
@@ -19,9 +19,10 @@ export class Chunk {
 
   generateFruit() {
     const randomPos = randomVectorInRange({
-      x: CHUNK_SIZE - 1,
-      y: CHUNK_SIZE - 1,
+      x: Math.min(CHUNK_SIZE - 1, WORLD_SIZE - this.position.x),
+      y: Math.min(CHUNK_SIZE - 1, WORLD_SIZE - this.position.y),
     });
+
     randomPos.x += this.position.x;
     randomPos.y += this.position.y;
 
