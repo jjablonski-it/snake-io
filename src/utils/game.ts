@@ -26,7 +26,6 @@ export const initGame = (io: Server) => {
 
   const main = () => {
     state.worldSize = WORLD_SIZE + state.players.length * WORLD_SIZE_PER_PLAYER;
-    fixChunks();
 
     // console.log(state.chunks.length);
     // console.log(WORLD_SIZE + state.players.length * WORLD_SIZE_PER_PLAYER);
@@ -35,6 +34,8 @@ export const initGame = (io: Server) => {
       p.snake.checkCollision();
       p.snake.forward();
     });
+
+    fixChunks();
 
     io.emit("update", state);
   };
@@ -62,12 +63,6 @@ const fixChunks = () => {
   const proper = state.worldSize / CHUNK_SIZE;
 
   if (proper > currentChunks) {
-    console.log("all chunks", state.chunks.length);
-
-    console.log("current", currentChunks);
-    console.log("proper", proper);
-    console.log("adding chunks");
-
     for (let i = 0; i < proper; i++) {
       for (let j = 0; j < proper; j++) {
         if (i < currentChunks && j < currentChunks) continue;
@@ -78,11 +73,14 @@ const fixChunks = () => {
         });
         newChunk.generateFruit();
         state.chunks.push(newChunk);
-        console.log(i, j);
       }
     }
     return;
   } else if (proper < currentChunks) {
+    state.chunks = state.chunks.filter(
+      (chunk) =>
+        chunk.position.x < state.worldSize && chunk.position.y < state.worldSize
+    );
   }
 
   state.chunks = state.chunks.filter(
@@ -117,8 +115,6 @@ export const getChunkForVector = ({ x, y }: Vector): Chunk | undefined => {
 export const returnPoints = (snake: Snake) => {
   const points = (snake.getLength() - TAIL_LENGTH) / LENGTH_PER_FRUIT;
   if (points <= 0) return;
-
-  console.log(`Generating ${points} fruits`);
 
   const emptyChunks = state.chunks.filter((chunk) => !chunk.isFruit());
 
