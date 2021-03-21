@@ -50,7 +50,6 @@ export class Snake {
     }
 
     this.head = wrapBounds(newPost);
-    // console.log(this.head);
   }
 
   setLength(n: number) {
@@ -77,7 +76,6 @@ export class Snake {
   checkCollision(): boolean {
     const { players } = getState();
     const currentChunk = getChunkForVector(this.head);
-    // console.log("currentChunk", currentChunk);
 
     if (!currentChunk) throw "No chunk for snake found";
 

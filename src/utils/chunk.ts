@@ -1,5 +1,5 @@
 import { Vector } from "../types";
-import { CHUNK_SIZE, WORLD_SIZE } from "./constants";
+import { CHUNK_SIZE } from "./constants";
 import { getState } from "./game";
 import { randomVectorInRange } from "./helpers";
 

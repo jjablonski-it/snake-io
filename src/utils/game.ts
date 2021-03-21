@@ -27,16 +27,12 @@ export const initGame = (io: Server) => {
   const main = () => {
     state.worldSize = WORLD_SIZE + state.players.length * WORLD_SIZE_PER_PLAYER;
 
-    // console.log(state.chunks.length);
-    // console.log(WORLD_SIZE + state.players.length * WORLD_SIZE_PER_PLAYER);
-
     state.players.forEach((p) => {
       p.snake.checkCollision();
       p.snake.forward();
     });
 
     fixChunks();
-
     io.emit("update", state);
   };
 
