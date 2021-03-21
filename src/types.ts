@@ -10,7 +10,6 @@ export interface Vector {
   x: number;
   y: number;
 }
-
 export interface Player {
   id: string;
   snake: Snake;
@@ -18,4 +17,5 @@ export interface Player {
 export interface State {
   players: Player[];
   fruit: Vector;
+  worldSize: number;
 }

@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 import { Direction, State } from "../types";
-import { GRID_P, SCALE, WORLD_SIZE } from "../utils/constants";
+import { GRID_P, SCALE } from "../utils/constants";
 import { clamp, getScaledWorldSize } from "../utils/helpers";
 import "./style.css";
 

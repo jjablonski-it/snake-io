@@ -1,10 +1,14 @@
 import { Server, Socket } from "socket.io";
 import { Direction, Player, State } from "../types";
-import { DELAY } from "./constants";
+import { DELAY, WORLD_SIZE, WORLD_SIZE_PER_PLAYER } from "./constants";
 import { randomVectorInBounds } from "./helpers";
 import { getPlayers } from "./players";
 
-const state: State = { players: [], fruit: randomVectorInBounds() };
+const state: State = {
+  players: [],
+  fruit: randomVectorInBounds(),
+  worldSize: WORLD_SIZE,
+};
 
 export const initGame = (io: Server) => {
   state.players = getPlayers();
@@ -15,6 +19,7 @@ export const initGame = (io: Server) => {
       p.snake.forward();
     });
 
+    state.worldSize = WORLD_SIZE + state.players.length * WORLD_SIZE_PER_PLAYER;
     io.emit("update", state);
   };
 
