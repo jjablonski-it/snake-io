@@ -116,7 +116,7 @@ export const returnPoints = (snake: Snake) => {
 
   for (let i = 0; i < points; i++) {
     const randomChunk = spliceRandomElement<Chunk>(emptyChunks);
-    if (!randomChunk) throw "Returning too much points";
+    if (!randomChunk) return;
 
     randomChunk.generateFruit();
   }

@@ -1,11 +1,11 @@
 import io from "socket.io-client";
 import { Direction, State } from "../types";
-import { GRID_P, SCALE } from "../utils/constants";
+import { GRID_P, LENGTH_PER_FRUIT, MIN_SCALE, SCALE } from "../utils/constants";
 import { clamp, getScaledWorldSize } from "../utils/helpers";
 import "./style.css";
 
 let scaleModifier = 1;
-const getScale = (): number => SCALE / scaleModifier;
+const getScale = (): number => SCALE + scaleModifier;
 
 const canvasSize = { width: window.innerWidth, height: window.innerHeight };
 const scaledSize = () => ({
@@ -15,6 +15,7 @@ const scaledSize = () => ({
 
 let socket = io();
 let socketId = "";
+let player = null;
 const canvas = document.querySelector("canvas");
 const ctx = canvas?.getContext("2d");
 
@@ -30,6 +31,16 @@ socket.on("connect", function () {
 
 socket.on("update", (data: State) => {
   console.log(data);
+  const p = data.players.find((p) => p.id === socketId);
+  player = p;
+
+  if (player)
+    scaleModifier = Math.max(
+      MIN_SCALE,
+      SCALE - player.snake.segments.length / LENGTH_PER_FRUIT
+    );
+  // console.log("scaleModifier", scaleModifier);
+
   if (ctx) requestAnimationFrame(() => draw(data, ctx));
 });
 
