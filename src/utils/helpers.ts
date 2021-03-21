@@ -50,3 +50,7 @@ export const addVectors = (a: Vector, b: Vector): Vector => ({
   x: a.x + b.x,
   y: a.y + b.y,
 });
+
+export const spliceRandomElement = <T>(table: T[]) => {
+  return table.splice(Math.floor(Math.random() * table.length), 1)[0];
+};

@@ -5,6 +5,7 @@ import {
   getChunkForVector,
   getState,
   removeFruit,
+  returnPoints,
 } from "./game";
 import { randomVectorInBounds, vectorEquals, wrapBounds } from "./helpers";
 
@@ -74,6 +75,11 @@ export class Snake {
     this.grow(LENGTH_PER_FRUIT);
   }
 
+  resetLength() {
+    returnPoints(this);
+    this.setLength(TAIL_LENGTH);
+  }
+
   checkCollision(): boolean {
     const { players } = getState();
     const currentChunk = getChunkForVector(this.head);
@@ -85,8 +91,6 @@ export class Snake {
       currentChunk.isFruit() &&
       vectorEquals(this.head, currentChunk.fruit!)
     ) {
-      console.log("CONSUME");
-
       this.consume();
       currentChunk.removeFruit();
       return true;
@@ -102,7 +106,7 @@ export class Snake {
 
     if (headToHeadCollision) {
       if (headToHeadCollision.getLength() >= this.getLength())
-        this.setLength(TAIL_LENGTH);
+        this.resetLength();
       return true;
     }
 
@@ -111,7 +115,7 @@ export class Snake {
     );
 
     if (bodyCollision) {
-      this.setLength(TAIL_LENGTH);
+      this.resetLength();
       return true;
     }
 
