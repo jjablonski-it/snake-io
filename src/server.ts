@@ -22,7 +22,7 @@ io.on("connect", (socket) => {
   socket.on("disconnect", () => {
     console.log(`${player.id} disconnected`);
     socket.removeAllListeners();
-    removePlayer(player.id);
+    removePlayer(player);
   });
 });
 

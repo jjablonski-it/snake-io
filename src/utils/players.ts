@@ -1,5 +1,6 @@
 import { Socket } from "socket.io";
 import { Player } from "../types";
+import { returnPoints } from "./game";
 import { Snake } from "./snake";
 
 const players: Player[] = [];
@@ -21,7 +22,8 @@ export const getOrAddPlayer = (socket: Socket) => {
   return newPlayer;
 };
 
-export const removePlayer = (id: Player["id"]) => {
-  const index = players.findIndex((p) => p.id === id);
+export const removePlayer = (player: Player) => {
+  returnPoints(player.snake);
+  const index = players.findIndex((p) => p === player);
   players.splice(index, 1);
 };
