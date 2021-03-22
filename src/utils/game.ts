@@ -31,6 +31,7 @@ export const initGame = (io: Server) => {
 
     state.players.forEach((p) => {
       p.snake.checkCollision();
+      p.snake.turn();
       p.snake.forward();
     });
 
@@ -53,7 +54,7 @@ export const handlePlayerMovement = (
   _io: Server
 ) => {
   socket.on("turn", (turn: Turn) => {
-    player.snake.turn(turn);
+    player.snake.setDirection(turn);
   });
 };
 

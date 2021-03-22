@@ -7,10 +7,12 @@ export class Snake {
   head: Vector;
   segments: Vector[];
   direction: Direction;
+  newDirection: Direction;
   constructor({ segments = [], direction = Direction.Up } = {}) {
     this.head = randomVectorInBounds();
     this.segments = segments;
     this.direction = direction;
+    this.newDirection = direction;
     console.log(this.head);
     this.setLength(TAIL_LENGTH);
   }
@@ -24,14 +26,18 @@ export class Snake {
   //   this.direction = direction;
   // }
 
-  // 2 key direction
-  turn(turn: Turn) {
+  // 2 key
+  setDirection(turn: Turn) {
     let newDirection = this.direction + turn;
 
     if (newDirection > Direction.Left) newDirection = Direction.Up;
     else if (newDirection < Direction.Up) newDirection = Direction.Left;
 
-    this.direction = newDirection;
+    this.newDirection = newDirection;
+  }
+
+  turn() {
+    this.direction = this.newDirection;
   }
 
   forward() {
