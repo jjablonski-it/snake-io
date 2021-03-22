@@ -1,48 +1,46 @@
-import io from "socket.io-client";
 import { Direction, State } from "../types";
 import { GRID_P, LENGTH_PER_FRUIT, MIN_SCALE, SCALE } from "../utils/constants";
 import { clamp, getScaledWorldSize } from "../utils/helpers";
 import "./style.css";
+import { initSocket } from "./utils/socket";
 
 let scaleModifier = 1;
-const getScale = (): number => SCALE + scaleModifier;
 
 const canvasSize = { width: window.innerWidth, height: window.innerHeight };
+
+let player = null;
+const canvas = document.querySelector("canvas");
+const ctx = canvas?.getContext("2d");
+
+const socket = initSocket({
+  updateCallback: (data) => {
+    console.log(data);
+    const p = data.players.find((p) => p.id === socket.id);
+    player = p;
+
+    if (player)
+      scaleModifier = Math.max(
+        MIN_SCALE,
+        SCALE - player.snake.segments.length / LENGTH_PER_FRUIT
+      );
+    // console.log("scaleModifier", scaleModifier);
+
+    if (ctx) requestAnimationFrame(() => draw(data, ctx));
+  },
+});
+
+const getScale = (): number => SCALE + scaleModifier;
+
 const scaledSize = () => ({
   width: canvasSize.width / getScale(),
   height: canvasSize.height / getScale(),
 });
-
-let socket = io();
-let socketId = "";
-let player = null;
-const canvas = document.querySelector("canvas");
-const ctx = canvas?.getContext("2d");
 
 if (ctx) {
   const { width, height } = canvasSize;
   ctx.canvas.width = width;
   ctx.canvas.height = height;
 }
-
-socket.on("connect", function () {
-  socketId = socket.id;
-});
-
-socket.on("update", (data: State) => {
-  console.log(data);
-  const p = data.players.find((p) => p.id === socketId);
-  player = p;
-
-  if (player)
-    scaleModifier = Math.max(
-      MIN_SCALE,
-      SCALE - player.snake.segments.length / LENGTH_PER_FRUIT
-    );
-  // console.log("scaleModifier", scaleModifier);
-
-  if (ctx) requestAnimationFrame(() => draw(data, ctx));
-});
 
 window.addEventListener("keydown", (e) => {
   const direction = e.key as Direction;
@@ -56,7 +54,7 @@ const draw = (data: State, ctx: CanvasRenderingContext2D) => {
   ctx.setTransform(getScale(), 0, 0, getScale(), 0, 0);
   ctx.clearRect(0, 0, getScaledWorldSize().x, getScaledWorldSize().y);
 
-  const player = players.find((p) => p.id === socketId);
+  const player = players.find((p) => p.id === socket.id);
   const snake = player?.snake;
   if (!snake) return;
 
@@ -79,20 +77,20 @@ const draw = (data: State, ctx: CanvasRenderingContext2D) => {
   ctx.lineWidth = 0.01;
   ctx.beginPath();
 
-  for (let x = 0; x < getScaledWorldSize().x; x += GRID_P) {
+  for (let x = 0; x < ctx.canvas.width; x += GRID_P) {
     ctx.moveTo(x, 0);
-    ctx.lineTo(x, getScaledWorldSize().y);
+    ctx.lineTo(x, ctx.canvas.height);
   }
 
-  for (let y = 0; y < getScaledWorldSize().y; y += GRID_P) {
+  for (let y = 0; y < ctx.canvas.height; y += GRID_P) {
     ctx.moveTo(0, y);
-    ctx.lineTo(getScaledWorldSize().x, y);
+    ctx.lineTo(ctx.canvas.width, y);
   }
   ctx.stroke();
 
   players.forEach((p) => {
     const { id, snake } = p;
-    const self = id === socketId;
+    const self = id === socket.id;
 
     const {
       head: { x, y },
