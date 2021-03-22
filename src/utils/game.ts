@@ -37,28 +37,9 @@ export const initGame = (io: Server) => {
 
     fixChunks();
     state.players.forEach((player) => {
-      const { chunks } = state;
-      const renderDistance = getPlayerRenderDistance(player);
-      console.log("renderDistance", renderDistance);
+      const { fruits, players } = extractChunkData(getChunksToRender(player));
 
-      const currentChunk = getChunkForVector(player.snake.head);
-      if (!currentChunk) return;
-
-      const renderChunks = chunks.filter(
-        (chunk) =>
-          Math.abs(chunk.position.x - currentChunk.position.x) <
-            renderDistance * CHUNK_SIZE &&
-          Math.abs(chunk.position.y - currentChunk.position.y) <
-            renderDistance * CHUNK_SIZE
-      );
-
-      console.log(`render ${renderChunks.length} chunks`);
-
-      const players = renderChunks.reduce(
-        (total: Player[], value) => total.concat(value.getPlayers()),
-        []
-      );
-      player.getSocket().emit("update", { chunks: renderChunks, players });
+      player.getSocket().emit("update", { fruits, players });
     });
   };
 
@@ -156,4 +137,45 @@ const getPlayerRenderDistance = (player: Player) => {
   return (
     RENDER_DISTANCE + player.snake.getLength() * RENDER_DISTANCE_PER_LENGTH
   );
+};
+
+const getChunksToRender = (player: Player): Chunk[] => {
+  const renderDistance = getPlayerRenderDistance(player);
+  console.log("renderDistance", renderDistance);
+
+  const currentChunk = getChunkForVector(player.snake.head);
+  if (!currentChunk) return [];
+
+  const renderChunks = state.chunks.filter(
+    (chunk) =>
+      Math.abs(chunk.position.x - currentChunk.position.x) <
+        renderDistance * CHUNK_SIZE &&
+      Math.abs(chunk.position.y - currentChunk.position.y) <
+        renderDistance * CHUNK_SIZE
+  );
+
+  console.log(`render ${renderChunks.length} chunks`);
+
+  // const players = renderChunks.reduce(
+  //   (total: Player[], value) => total.concat(value.getPlayers()),
+  //   []
+  // );
+
+  return renderChunks;
+};
+
+const extractChunkData = (chunks: Chunk[]) => {
+  const players = chunks.reduce(
+    (total: Player[], value) =>
+      total.concat(
+        value.getPlayers().filter((player) => !total.includes(player))
+      ),
+    []
+  );
+
+  const fruits = chunks
+    .filter((chunk) => chunk.isFruit())
+    .map((chunk) => chunk.fruit);
+
+  return { players, fruits };
 };
