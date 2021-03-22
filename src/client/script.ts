@@ -21,7 +21,8 @@ const socket = initSocket({
     if (player)
       scaleModifier = Math.max(
         MIN_SCALE,
-        SCALE - player.snake.segments.length / LENGTH_PER_FRUIT
+        SCALE -
+          player.snake.segments.length / LENGTH_PER_FRUIT / LENGTH_PER_FRUIT
       );
     // console.log("scaleModifier", scaleModifier);
 
