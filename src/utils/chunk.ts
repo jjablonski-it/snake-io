@@ -1,6 +1,6 @@
 import { Vector } from "../types";
 import { CHUNK_SIZE } from "./constants";
-import { getState } from "./game";
+import { getChunkForVector, getState } from "./game";
 import { randomVectorInRange } from "./helpers";
 
 export class Chunk {
@@ -36,5 +36,23 @@ export class Chunk {
 
   isFruit() {
     return !!this.fruit;
+  }
+
+  getPlayers() {
+    return getState().players.filter((player) => {
+      const { head, segments } = player.snake;
+      return (
+        getChunkForVector(head) === this ||
+        segments.some((segment) => getChunkForVector(segment) === this)
+      );
+    });
+  }
+
+  isPlayer() {
+    this.getPlayers().length > 0;
+  }
+
+  isOccupied() {
+    return this.isFruit() || this.isPlayer();
   }
 }

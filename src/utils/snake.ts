@@ -79,6 +79,7 @@ export class Snake {
 
     if (!currentChunk) throw "No chunk for snake found";
 
+    // Fruit collision
     if (
       currentChunk.isFruit() &&
       vectorEquals(this.head, currentChunk.fruit!)
@@ -88,13 +89,15 @@ export class Snake {
       return true;
     }
 
-    const snakes = players
+    const snakes = currentChunk
+      .getPlayers()
       .map((player) => player.snake)
       .filter((snake) => snake !== this);
 
-    const headToHeadCollision = snakes.find((snake) =>
-      vectorEquals(snake.head, this.head)
-    );
+    // Head collision
+    const headToHeadCollision = snakes
+      .filter((snake) => snake !== this)
+      .find((snake) => vectorEquals(snake.head, this.head));
 
     if (headToHeadCollision) {
       if (headToHeadCollision.getLength() >= this.getLength())
@@ -102,6 +105,7 @@ export class Snake {
       return true;
     }
 
+    // Tail collision
     const bodyCollision = snakes.some((snake) =>
       snake.segments.some((segment) => vectorEquals(segment, this.head))
     );

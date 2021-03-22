@@ -8,12 +8,6 @@ interface Props {
 }
 
 export const initSocket = ({ updateCallback }: Props) => {
-  let socketId = "";
-
-  socket.on("connect", () => {
-    socketId = socket.id;
-  });
-
   socket.on("update", (data: State) => updateCallback(data));
 
   return socket;
