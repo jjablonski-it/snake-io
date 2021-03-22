@@ -8,8 +8,9 @@ export const WORLD_SIZE_PER_PLAYER = 10;
 export const TAIL_LENGTH = 3;
 export const LENGTH_PER_FRUIT = 5;
 export const CHUNK_SIZE = 10;
-export const RENDER_DISTANCE = 2;
-export const RENDER_DISTANCE_PER_LENGTH = 0; //LENGTH_PER_FRUIT / 5;
+export const RENDER_DISTANCE = 5;
+export const RENDER_DISTANCE_PER_LENGTH =
+  1 / LENGTH_PER_FRUIT / LENGTH_PER_FRUIT;
 
 // Client
 export const SCALE = 10;
