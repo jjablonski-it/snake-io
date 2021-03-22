@@ -1,4 +1,4 @@
-import { Direction, State } from "../types";
+import { Direction, Player, State, Vector } from "../types";
 import { GRID_P, LENGTH_PER_FRUIT, MIN_SCALE, SCALE } from "../utils/constants";
 import { clamp, getScaledWorldSize } from "../utils/helpers";
 import "./style.css";
@@ -50,8 +50,11 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
-const draw = (data: State, ctx: CanvasRenderingContext2D) => {
-  const { chunks, players } = data;
+const draw = (
+  data: { fruits: Vector[]; players: Player[] },
+  ctx: CanvasRenderingContext2D
+) => {
+  const { fruits, players } = data;
   ctx.setTransform(getScale(), 0, 0, getScale(), 0, 0);
   ctx.clearRect(0, 0, getScaledWorldSize().x, getScaledWorldSize().y);
 
@@ -109,12 +112,9 @@ const draw = (data: State, ctx: CanvasRenderingContext2D) => {
 
   ctx.fillStyle = "green";
 
-  chunks
-    .filter((chunk) => !!chunk.fruit)
-    .map((chunk) => chunk.fruit)
-    .forEach((fruit) => {
-      ctx.fillRect(fruit!.x, fruit!.y, 1, 1);
-    });
+  fruits.forEach((fruit) => {
+    ctx.fillRect(fruit!.x, fruit!.y, 1, 1);
+  });
 
   ctx.strokeRect(0, 0, getScaledWorldSize().x, getScaledWorldSize().y);
 };
