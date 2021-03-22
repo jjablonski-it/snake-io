@@ -1,3 +1,4 @@
+import { Socket } from "socket.io";
 import { Chunk } from "./utils/chunk";
 import { Snake } from "./utils/snake";
 
@@ -14,6 +15,7 @@ export interface Vector {
 export interface Player {
   id: string;
   snake: Snake;
+  getSocket: () => Socket;
 }
 export interface State {
   players: Player[];

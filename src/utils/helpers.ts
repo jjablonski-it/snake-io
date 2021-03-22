@@ -1,4 +1,4 @@
-import { Vector } from "../types";
+import { State, Vector } from "../types";
 import { SCALE } from "./constants";
 import { getState } from "./game";
 

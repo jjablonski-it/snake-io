@@ -1,7 +1,7 @@
 import express from "express";
 import { Server } from "socket.io";
 import { PORT } from "./utils/constants";
-import { handlePlayer, initGame } from "./utils/game";
+import { handlePlayerMovement, initGame } from "./utils/game";
 import { getOrAddPlayer, removePlayer } from "./utils/players";
 const socket = require("socket.io");
 
@@ -14,10 +14,10 @@ const server = app.listen(PORT, () =>
 
 const io: Server = socket(server);
 io.on("connect", (socket) => {
-  const player = getOrAddPlayer(socket.id);
+  const player = getOrAddPlayer(socket);
   console.log(`${player.id} connected`);
 
-  handlePlayer(player, socket, io);
+  handlePlayerMovement(player, socket, io);
 
   socket.on("disconnect", () => {
     console.log(`${player.id} disconnected`);

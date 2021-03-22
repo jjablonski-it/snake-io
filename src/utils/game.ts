@@ -1,3 +1,4 @@
+import { chunk } from "lodash";
 import { Server, Socket } from "socket.io";
 import { Direction, Player, State, Vector } from "../types";
 import { Chunk } from "./chunk";
@@ -5,6 +6,8 @@ import {
   CHUNK_SIZE,
   DELAY,
   LENGTH_PER_FRUIT,
+  RENDER_DISTANCE,
+  RENDER_DISTANCE_PER_LENGTH,
   TAIL_LENGTH,
   WORLD_SIZE,
   WORLD_SIZE_PER_PLAYER,
@@ -33,13 +36,40 @@ export const initGame = (io: Server) => {
     });
 
     fixChunks();
-    io.emit("update", state);
+    state.players.forEach((player) => {
+      const { chunks } = state;
+      const renderDistance = getPlayerRenderDistance(player);
+      console.log("renderDistance", renderDistance);
+
+      const currentChunk = getChunkForVector(player.snake.head);
+      if (!currentChunk) return;
+
+      const renderChunks = chunks.filter(
+        (chunk) =>
+          Math.abs(chunk.position.x - currentChunk.position.x) <
+            renderDistance * CHUNK_SIZE &&
+          Math.abs(chunk.position.y - currentChunk.position.y) <
+            renderDistance * CHUNK_SIZE
+      );
+
+      console.log(`render ${renderChunks.length} chunks`);
+
+      const players = renderChunks.reduce(
+        (total: Player[], value) => total.concat(value.getPlayers()),
+        []
+      );
+      player.getSocket().emit("update", { chunks: renderChunks, players });
+    });
   };
 
   setInterval(main, DELAY);
 };
 
-export const handlePlayer = (player: Player, socket: Socket, _io: Server) => {
+export const handlePlayerMovement = (
+  player: Player,
+  socket: Socket,
+  _io: Server
+) => {
   socket.on("turn", (turn: Direction) => {
     player.snake.turn(turn);
   });
@@ -120,4 +150,10 @@ export const returnPoints = (snake: Snake) => {
 
     randomChunk.generateFruit();
   }
+};
+
+const getPlayerRenderDistance = (player: Player) => {
+  return (
+    RENDER_DISTANCE + player.snake.getLength() * RENDER_DISTANCE_PER_LENGTH
+  );
 };
