@@ -1,4 +1,4 @@
-import { Direction, Player, State, Vector } from "../types";
+import { Direction, Player, Vector } from "../types";
 import { GRID_P, LENGTH_PER_FRUIT, MIN_SCALE, SCALE } from "../utils/constants";
 import { clamp, getScaledWorldSize } from "../utils/helpers";
 import "./style.css";

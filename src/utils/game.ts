@@ -1,4 +1,3 @@
-import { chunk } from "lodash";
 import { Server, Socket } from "socket.io";
 import { Direction, Player, State, Vector } from "../types";
 import { Chunk } from "./chunk";
@@ -141,7 +140,6 @@ const getPlayerRenderDistance = (player: Player) => {
 
 const getChunksToRender = (player: Player): Chunk[] => {
   const renderDistance = getPlayerRenderDistance(player);
-  console.log("renderDistance", renderDistance);
 
   const currentChunk = getChunkForVector(player.snake.head);
   if (!currentChunk) return [];
@@ -153,13 +151,6 @@ const getChunksToRender = (player: Player): Chunk[] => {
       Math.abs(chunk.position.y - currentChunk.position.y) <
         renderDistance * CHUNK_SIZE
   );
-
-  console.log(`render ${renderChunks.length} chunks`);
-
-  // const players = renderChunks.reduce(
-  //   (total: Player[], value) => total.concat(value.getPlayers()),
-  //   []
-  // );
 
   return renderChunks;
 };
