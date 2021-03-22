@@ -74,7 +74,6 @@ export class Snake {
   }
 
   checkCollision(): boolean {
-    const { players } = getState();
     const currentChunk = getChunkForVector(this.head);
 
     if (!currentChunk) throw "No chunk for snake found";
@@ -89,10 +88,8 @@ export class Snake {
       return true;
     }
 
-    const snakes = currentChunk
-      .getPlayers()
-      .map((player) => player.snake)
-      .filter((snake) => snake !== this);
+    const snakes = currentChunk.getPlayers().map((player) => player.snake);
+    // .filter((snake) => snake !== this);
 
     // Head collision
     const headToHeadCollision = snakes

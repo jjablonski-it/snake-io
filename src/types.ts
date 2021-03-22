@@ -22,3 +22,9 @@ export interface State {
   chunks: Chunk[];
   worldSize: number;
 }
+
+export interface StateDTO {
+  fruits: Vector[];
+  players: Player[];
+  worldSize: number;
+}

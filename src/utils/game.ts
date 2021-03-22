@@ -38,7 +38,9 @@ export const initGame = (io: Server) => {
     state.players.forEach((player) => {
       const { fruits, players } = extractChunkData(getChunksToRender(player));
 
-      player.getSocket().emit("update", { fruits, players });
+      player
+        .getSocket()
+        .emit("update", { fruits, players, worldSize: state.worldSize });
     });
   };
 

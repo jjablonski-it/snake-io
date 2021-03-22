@@ -1,14 +1,14 @@
 import io from "socket.io-client";
-import { State } from "../../types";
+import { StateDTO } from "../../types";
 
 let socket = io();
 
 interface Props {
-  updateCallback: (data: State) => void;
+  updateCallback: (data: StateDTO) => void;
 }
 
 export const initSocket = ({ updateCallback }: Props) => {
-  socket.on("update", (data: State) => updateCallback(data));
+  socket.on("update", (data: StateDTO) => updateCallback(data));
 
   return socket;
 };
