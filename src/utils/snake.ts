@@ -1,4 +1,4 @@
-import { Direction, Vector } from "../types";
+import { Direction, Turn, Vector } from "../types";
 import { LENGTH_PER_FRUIT, TAIL_LENGTH } from "./constants";
 import { getChunkForVector, getState, returnPoints } from "./game";
 import { randomVectorInBounds, vectorEquals, wrapBounds } from "./helpers";
@@ -15,13 +15,23 @@ export class Snake {
     this.setLength(TAIL_LENGTH);
   }
 
-  turn(direction: Direction) {
-    // 2 key direction
-    // if (newDirection > Direction.Left) newDirection = Direction.Up;
-    // else if (newDirection < Direction.Up) newDirection = Direction.Left;
-    console.log(direction);
+  // turn(direction: Direction) {
+  //   // 2 key direction
+  //   // if (newDirection > Direction.Left) newDirection = Direction.Up;
+  //   // else if (newDirection < Direction.Up) newDirection = Direction.Left;
+  //   console.log(direction);
 
-    this.direction = direction;
+  //   this.direction = direction;
+  // }
+
+  // 2 key direction
+  turn(turn: Turn) {
+    let newDirection = this.direction + turn;
+
+    if (newDirection > Direction.Left) newDirection = Direction.Up;
+    else if (newDirection < Direction.Up) newDirection = Direction.Left;
+
+    this.direction = newDirection;
   }
 
   forward() {

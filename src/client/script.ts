@@ -1,5 +1,5 @@
 import { words } from "lodash";
-import { Direction, Player, StateDTO, Vector } from "../types";
+import { Direction, Player, StateDTO, Turn, Vector } from "../types";
 import {
   GRID_P,
   LENGTH_PER_FRUIT,
@@ -54,10 +54,15 @@ if (ctx) {
 }
 
 window.addEventListener("keydown", (e) => {
-  const direction = e.key as Direction;
-  if (direction && Object.values(Direction).includes(direction)) {
-    socket.emit("turn", direction);
-  }
+  const direction = e.key;
+  console.log(direction);
+
+  if (direction === "ArrowLeft") socket.emit("turn", Turn.LEFT);
+  else if (direction === "ArrowRight") socket.emit("turn", Turn.RIGHT);
+  // const direction = e.key as Direction;
+  // if (direction && Object.values(Direction).includes(direction)) {
+  //   socket.emit("turn", direction);
+  // }
 });
 
 const draw = (data: StateDTO, ctx: CanvasRenderingContext2D) => {

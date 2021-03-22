@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { Direction, Player, State, Vector } from "../types";
+import { Direction, Player, State, Turn, Vector } from "../types";
 import { Chunk } from "./chunk";
 import {
   CHUNK_SIZE,
@@ -52,7 +52,7 @@ export const handlePlayerMovement = (
   socket: Socket,
   _io: Server
 ) => {
-  socket.on("turn", (turn: Direction) => {
+  socket.on("turn", (turn: Turn) => {
     player.snake.turn(turn);
   });
 };
