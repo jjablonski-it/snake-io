@@ -1,5 +1,4 @@
-import { words } from "lodash";
-import { Direction, Player, StateDTO, Turn, Vector } from "../types";
+import { StateDTO } from "../types";
 import {
   GRID_P,
   LENGTH_PER_FRUIT,
@@ -9,6 +8,7 @@ import {
 } from "../utils/constants";
 import { clamp, getScaledWorldSize } from "../utils/helpers";
 import "./style.css";
+import { setupListeners } from "./utils/listeners";
 import { initSocket } from "./utils/socket";
 
 let scaleModifier = 1;
@@ -40,6 +40,8 @@ const socket = initSocket({
   },
 });
 
+setupListeners(socket);
+
 const getScale = (): number => SCALE + scaleModifier;
 
 const scaledSize = () => ({
@@ -52,18 +54,6 @@ if (ctx) {
   ctx.canvas.width = width;
   ctx.canvas.height = height;
 }
-
-window.addEventListener("keydown", (e) => {
-  const direction = e.key;
-  console.log(direction);
-
-  if (direction === "ArrowLeft") socket.emit("turn", Turn.LEFT);
-  else if (direction === "ArrowRight") socket.emit("turn", Turn.RIGHT);
-  // const direction = e.key as Direction;
-  // if (direction && Object.values(Direction).includes(direction)) {
-  //   socket.emit("turn", direction);
-  // }
-});
 
 const draw = (data: StateDTO, ctx: CanvasRenderingContext2D) => {
   const { fruits, players } = data;

@@ -4,10 +4,10 @@ export const DELAY = 100;
 
 // Game
 export const WORLD_SIZE = 20;
-export const WORLD_SIZE_PER_PLAYER = 10;
+export const CHUNK_SIZE = 10;
+export const WORLD_SIZE_PER_PLAYER = CHUNK_SIZE;
 export const TAIL_LENGTH = 3;
 export const LENGTH_PER_FRUIT = 6;
-export const CHUNK_SIZE = 10;
 export const RENDER_DISTANCE = 3;
 export const RENDER_DISTANCE_PER_LENGTH = 1 / TAIL_LENGTH / LENGTH_PER_FRUIT;
 
