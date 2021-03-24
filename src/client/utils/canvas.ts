@@ -8,16 +8,24 @@ export const createCanvasController = (ctx: CanvasRenderingContext2D) => {
     ctx.canvas.height = height;
   };
 
-  const update = (data: StateDTO) => {
+  const update = ({
+    me: {
+      snake: {
+        head: { x, y },
+      },
+    },
+    worldSize,
+  }: StateDTO) => {
     ctx.resetTransform();
+    ctx.clearRect(0, 0, width, height);
     ctx.scale(SCALE, SCALE);
 
-    drawBorders(data);
+    drawBorders(worldSize);
     drawGrid();
   };
 
-  const drawBorders = ({ worldSize }: StateDTO) => {
-    ctx.lineWidth = 0.1;
+  const drawBorders = (worldSize: StateDTO["worldSize"]) => {
+    ctx.lineWidth = 0.2;
     ctx.clearRect(0, 0, width, height);
     ctx.strokeRect(0, 0, worldSize, worldSize);
   };

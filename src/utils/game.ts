@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { Direction, Player, State, Turn, Vector } from "../types";
+import { Direction, Player, State, StateDTO, Turn, Vector } from "../types";
 import { Chunk } from "./chunk";
 import {
   CHUNK_SIZE,
@@ -38,10 +38,19 @@ export const initGame = (io: Server) => {
     fixChunks();
     state.players.forEach((player) => {
       const { fruits, players } = extractChunkData(getChunksToRender(player));
+      const me = players.splice(
+        players.findIndex((p) => p.id === player.id)
+      )[0];
+      if (!me) throw "Player not found";
 
-      player
-        .getSocket()
-        .emit("update", { fruits, players, worldSize: state.worldSize });
+      const stateDTO: StateDTO = {
+        me,
+        fruits,
+        players,
+        worldSize: state.worldSize,
+      };
+
+      player.getSocket().emit("update", stateDTO);
     });
   };
 
@@ -169,7 +178,7 @@ const extractChunkData = (chunks: Chunk[]) => {
 
   const fruits = chunks
     .filter((chunk) => chunk.isFruit())
-    .map((chunk) => chunk.fruit);
+    .map((chunk) => chunk.fruit!);
 
   return { players, fruits };
 };

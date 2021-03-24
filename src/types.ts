@@ -37,5 +37,6 @@ export interface State {
 export interface StateDTO {
   fruits: Vector[];
   players: Player[];
+  me: Player;
   worldSize: number;
 }
