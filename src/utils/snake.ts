@@ -1,30 +1,19 @@
 import { Direction, Turn, Vector } from "../types";
 import { LENGTH_PER_FRUIT, TAIL_LENGTH } from "./constants";
-import {
-  getChunkForVector,
-  getFreeChunks,
-  getState,
-  returnPoints,
-} from "./game";
-import {
-  randFromArray,
-  randomVectorInBounds,
-  randomVectorInRange,
-  vectorEquals,
-  wrapBounds,
-} from "./helpers";
+import { getChunkForVector, getFreeChunks, returnPoints } from "./game";
+import { randFromArray, randomEnum, vectorEquals, wrapBounds } from "./helpers";
 
 export class Snake {
   head: Vector;
   segments: Vector[];
   direction: Direction;
   newDirection: Direction;
-  constructor({ segments = [], direction = Direction.Up } = {}) {
+  constructor({ segments = [] } = {}) {
     const startChunk = randFromArray(getFreeChunks());
     this.head = startChunk.randomVectorWithin();
     this.segments = segments;
-    this.direction = direction;
-    this.newDirection = direction;
+    this.direction = randomEnum(Direction);
+    this.newDirection = this.direction;
     console.log(this.head);
     this.setLength(TAIL_LENGTH);
   }
