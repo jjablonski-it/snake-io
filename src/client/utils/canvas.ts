@@ -1,25 +1,44 @@
 import { head } from "lodash";
 import { StateDTO } from "../../types";
-import { GRID_P, SCALE } from "../../utils/constants";
+import {
+  GRID_P,
+  LENGTH_PER_FRUIT,
+  MIN_SCALE,
+  SCALE,
+  ZOOMOUT_PER_FRUIT,
+} from "../../utils/constants";
 import { Snake } from "../../utils/snake";
 
 export const createCanvasController = (ctx: CanvasRenderingContext2D) => {
   let width: number;
   let height: number;
 
+  let zoomOut = 1;
+
   const setSize = (size: { width: number; height: number }) => {
     ctx.canvas.width = width = size.width;
     ctx.canvas.height = height = size.height;
   };
 
+  const getScale = () => Math.max(MIN_SCALE, SCALE - zoomOut);
+
+  const setZoom = (snake: StateDTO["me"]["snake"]) => {
+    zoomOut = (snake.segments.length / LENGTH_PER_FRUIT) * ZOOMOUT_PER_FRUIT;
+  };
+
   const update = ({ me: { snake }, players, fruits, worldSize }: StateDTO) => {
     const { width, height } = ctx.canvas;
+    setZoom(snake);
+
+    console.log(zoomOut);
+    console.log(getScale());
+
     ctx.resetTransform();
     ctx.clearRect(0, 0, width, height);
-    ctx.scale(SCALE, SCALE);
+    ctx.scale(getScale(), getScale());
     ctx.translate(
-      width / SCALE / 2 - snake.head.x,
-      height / SCALE / 2 - snake.head.y
+      width / getScale() / 2 - snake.head.x,
+      height / getScale() / 2 - snake.head.y
     );
 
     drawBorders(worldSize);
@@ -30,7 +49,7 @@ export const createCanvasController = (ctx: CanvasRenderingContext2D) => {
   };
 
   const drawBorders = (worldSize: StateDTO["worldSize"]) => {
-    ctx.lineWidth = 0.2;
+    ctx.lineWidth = 0.1;
     ctx.clearRect(0, 0, width, height);
     ctx.strokeRect(0, 0, worldSize, worldSize);
   };

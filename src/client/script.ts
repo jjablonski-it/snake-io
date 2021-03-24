@@ -15,7 +15,6 @@ const canvas = document.querySelector("canvas");
 
   const socket = initSocket({
     updateCallback: (data) => {
-      console.log(data);
       requestAnimationFrame(() => canvasController.update(data));
     },
   });
