@@ -12,7 +12,7 @@ export const RENDER_DISTANCE = 3;
 export const RENDER_DISTANCE_PER_LENGTH = 1 / TAIL_LENGTH / LENGTH_PER_FRUIT;
 
 // Client
-export const SCALE = 10;
+export const SCALE = 20;
 export const MIN_SCALE = 1;
 export const GRID_P = CHUNK_SIZE;
 export const MIN_VIEWPORT = CHUNK_SIZE * 4;
