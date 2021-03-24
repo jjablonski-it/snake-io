@@ -180,3 +180,7 @@ const extractChunkData = (chunks: Chunk[]) => {
 
   return { players, fruits };
 };
+
+export const getFreeChunks = () => {
+  return state.chunks.filter((chunk) => !chunk.isPlayer());
+};

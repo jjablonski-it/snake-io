@@ -1,5 +1,5 @@
 import { State, Vector } from "../types";
-import { SCALE } from "./constants";
+import { CHUNK_SIZE, SCALE } from "./constants";
 import { getState } from "./game";
 
 export const randRange = (range: number) => Math.floor(Math.random() * range);
@@ -53,6 +53,10 @@ export const addVectors = (a: Vector, b: Vector): Vector => ({
   y: a.y + b.y,
 });
 
-export const spliceRandomElement = <T>(table: T[]) => {
-  return table.splice(Math.floor(Math.random() * table.length), 1)[0];
+export const spliceRandomElement = <T>(array: T[]) => {
+  return array.splice(Math.floor(Math.random() * array.length), 1)[0];
+};
+
+export const randFromArray = <T>(array: T[]) => {
+  return array[Math.floor(Math.random() * array.length)];
 };

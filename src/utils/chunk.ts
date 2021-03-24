@@ -18,16 +18,19 @@ export class Chunk {
     };
   }
 
-  generateFruit() {
-    const randomPos = randomVectorInRange({
+  randomVectorWithin() {
+    const vector = randomVectorInRange({
       x: Math.min(CHUNK_SIZE - 1, getState().worldSize - this.position.x),
       y: Math.min(CHUNK_SIZE - 1, getState().worldSize - this.position.y),
     });
 
-    randomPos.x += this.position.x;
-    randomPos.y += this.position.y;
+    vector.x += this.position.x;
+    vector.y += this.position.y;
+    return vector;
+  }
 
-    this.fruit = randomPos;
+  generateFruit() {
+    this.fruit = this.randomVectorWithin();
   }
 
   removeFruit() {
@@ -49,7 +52,7 @@ export class Chunk {
   }
 
   isPlayer() {
-    this.getPlayers().length > 0;
+    return this.getPlayers().length > 0;
   }
 
   isOccupied() {
