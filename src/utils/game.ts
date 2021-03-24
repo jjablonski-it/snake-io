@@ -38,15 +38,13 @@ export const initGame = (io: Server) => {
     fixChunks();
     state.players.forEach((player) => {
       const { fruits, players } = extractChunkData(getChunksToRender(player));
-      const me = players.splice(
-        players.findIndex((p) => p.id === player.id)
-      )[0];
+      const me = players.find((p) => p.id === player.id);
       if (!me) throw "Player not found";
 
       const stateDTO: StateDTO = {
         me,
         fruits,
-        players,
+        players: players.filter((p) => p.id !== player.id),
         worldSize: state.worldSize,
       };
 

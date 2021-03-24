@@ -1,5 +1,6 @@
 import { StateDTO } from "../../types";
 import { GRID_P, SCALE } from "../../utils/constants";
+import { Snake } from "../../utils/snake";
 
 export const createCanvasController = (ctx: CanvasRenderingContext2D) => {
   const { width, height } = ctx.canvas;
@@ -8,20 +9,15 @@ export const createCanvasController = (ctx: CanvasRenderingContext2D) => {
     ctx.canvas.height = height;
   };
 
-  const update = ({
-    me: {
-      snake: {
-        head: { x, y },
-      },
-    },
-    worldSize,
-  }: StateDTO) => {
+  const update = ({ me: { snake }, players, worldSize }: StateDTO) => {
     ctx.resetTransform();
     ctx.clearRect(0, 0, width, height);
     ctx.scale(SCALE, SCALE);
 
     drawBorders(worldSize);
     drawGrid();
+    drawSnake(snake, "blue");
+    drawSnakes(players.map((p) => p.snake));
   };
 
   const drawBorders = (worldSize: StateDTO["worldSize"]) => {
@@ -44,6 +40,24 @@ export const createCanvasController = (ctx: CanvasRenderingContext2D) => {
       ctx.lineTo(width, y);
     }
     ctx.stroke();
+  };
+
+  const drawSnake = (
+    { head, segments }: StateDTO["me"]["snake"],
+    headColor: string = "blue",
+    bodyColor: string = "gray"
+  ) => {
+    ctx.fillStyle = headColor;
+    ctx.fillRect(head.x, head.y, 1, 1);
+
+    ctx.fillStyle = bodyColor;
+    segments.forEach(({ x, y }) => {
+      ctx.fillRect(x, y, 1, 1);
+    });
+  };
+
+  const drawSnakes = (snake: Snake[]) => {
+    snake.forEach((snake) => drawSnake(snake, "red"));
   };
 
   return { update, setSize };
