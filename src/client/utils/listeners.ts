@@ -1,7 +1,6 @@
-import { Socket } from "socket.io";
 import { Turn } from "../../types";
 
-export const setupListeners = (socket: Socket) => {
+export const setupWindowListeners = (socket: SocketIOClient.Socket) => {
   window.addEventListener("keydown", (e) => {
     const direction = e.key;
     console.log(direction);
