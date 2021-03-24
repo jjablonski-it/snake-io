@@ -9,7 +9,7 @@ export const createCanvasController = (ctx: CanvasRenderingContext2D) => {
     ctx.canvas.height = height;
   };
 
-  const update = ({ me: { snake }, players, worldSize }: StateDTO) => {
+  const update = ({ me: { snake }, players, fruits, worldSize }: StateDTO) => {
     ctx.resetTransform();
     ctx.clearRect(0, 0, width, height);
     ctx.scale(SCALE, SCALE);
@@ -18,6 +18,7 @@ export const createCanvasController = (ctx: CanvasRenderingContext2D) => {
     drawGrid();
     drawSnake(snake, "blue");
     drawSnakes(players.map((p) => p.snake));
+    drawFruits(fruits);
   };
 
   const drawBorders = (worldSize: StateDTO["worldSize"]) => {
@@ -58,6 +59,13 @@ export const createCanvasController = (ctx: CanvasRenderingContext2D) => {
 
   const drawSnakes = (snake: Snake[]) => {
     snake.forEach((snake) => drawSnake(snake, "red"));
+  };
+
+  const drawFruits = (fruits: StateDTO["fruits"], color: string = "green") => {
+    ctx.fillStyle = color;
+    fruits.forEach(({ x, y }) => {
+      ctx.fillRect(x, y, 1, 1);
+    });
   };
 
   return { update, setSize };

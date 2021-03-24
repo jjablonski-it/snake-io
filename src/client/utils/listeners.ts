@@ -10,7 +10,6 @@ export const setupWindowListeners = (socket: SocketIOClient.Socket) => {
   });
 
   window.addEventListener("click", ({ pageX }) => {
-    console.log(pageX);
     if (pageX < window.innerWidth / 2) {
       socket.emit("turn", Turn.LEFT);
     } else {
