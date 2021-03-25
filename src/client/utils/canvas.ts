@@ -1,5 +1,4 @@
-import { head } from "lodash";
-import { StateDTO } from "../../types";
+import { Direction, Player, StateDTO } from "../../types";
 import {
   GRID_P,
   LENGTH_PER_FRUIT,
@@ -7,7 +6,6 @@ import {
   SCALE,
   ZOOMOUT_PER_FRUIT,
 } from "../../utils/constants";
-import { Snake } from "../../utils/snake";
 
 export const createCanvasController = (ctx: CanvasRenderingContext2D) => {
   let width: number;
@@ -26,12 +24,10 @@ export const createCanvasController = (ctx: CanvasRenderingContext2D) => {
     zoomOut = (snake.segments.length / LENGTH_PER_FRUIT) * ZOOMOUT_PER_FRUIT;
   };
 
-  const update = ({ me: { snake }, players, fruits, worldSize }: StateDTO) => {
+  const update = ({ me, players, fruits, worldSize }: StateDTO) => {
     const { width, height } = ctx.canvas;
+    const { snake } = me;
     setZoom(snake);
-
-    console.log(zoomOut);
-    console.log(getScale());
 
     ctx.resetTransform();
     ctx.clearRect(0, 0, width, height);
@@ -43,8 +39,8 @@ export const createCanvasController = (ctx: CanvasRenderingContext2D) => {
 
     drawBorders(worldSize);
     drawGrid(worldSize);
-    drawSnake(snake, "blue");
-    drawSnakes(players.map((p) => p.snake));
+    drawPlayer(me, "blue");
+    drawPlayers(players);
     drawFruits(fruits);
   };
 
@@ -70,10 +66,11 @@ export const createCanvasController = (ctx: CanvasRenderingContext2D) => {
     ctx.stroke();
   };
 
-  const drawSnake = (
-    { head, segments }: StateDTO["me"]["snake"],
+  const drawPlayer = (
+    { snake: { head, segments, direction } }: Player,
     headColor: string = "blue",
-    bodyColor: string = "gray"
+    bodyColor: string = "gray",
+    font: string = "1px roboto"
   ) => {
     ctx.fillStyle = headColor;
     ctx.fillRect(head.x, head.y, 1, 1);
@@ -82,10 +79,20 @@ export const createCanvasController = (ctx: CanvasRenderingContext2D) => {
     segments.forEach(({ x, y }) => {
       ctx.fillRect(x, y, 1, 1);
     });
+
+    ctx.font = font;
+    const name = "####";
+    const { width } = ctx.measureText(name);
+
+    ctx.fillText(
+      name,
+      head.x - width / 2 + 0.5,
+      head.y + (direction === Direction.Down ? 2 : 0)
+    );
   };
 
-  const drawSnakes = (snake: Snake[]) => {
-    snake.forEach((snake) => drawSnake(snake, "red"));
+  const drawPlayers = (players: Player[]) => {
+    players.forEach((player) => drawPlayer(player, "red"));
   };
 
   const drawFruits = (fruits: StateDTO["fruits"], color: string = "green") => {
