@@ -12,12 +12,12 @@ export const getOrAddPlayer = (socket: Socket) => {
   if (player) return player;
 
   const newPlayer: Player = {
+    name: "",
     id: socket.id,
     snake: new Snake(),
     getSocket() {
       return socket;
     },
-    name: "",
   };
   players.push(newPlayer);
   return newPlayer;

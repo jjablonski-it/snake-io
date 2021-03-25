@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: "Roboto", sans-serif;
 }
 
 body {
@@ -14,4 +15,15 @@ body {
 
 canvas {
   background-color: rgb(214, 214, 214);
+}
+
+#lb {
+  position: absolute;
+  right: 0;
+  margin: 25px;
+}
+
+#lb span.score {
+  float: right;
+  margin-left: 10px;
 }

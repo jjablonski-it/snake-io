@@ -1,5 +1,6 @@
 import "./style.css";
 import { createCanvasController } from "./utils/canvas";
+import { updateLeaderboard } from "./utils/leaderboard";
 import { setupWindowListeners } from "./utils/listeners";
 import { initSocket } from "./utils/socket";
 
@@ -16,6 +17,7 @@ const canvas = document.querySelector("canvas");
   const socket = initSocket({
     updateCallback: (data) => {
       requestAnimationFrame(() => canvasController.update(data));
+      updateLeaderboard(data);
     },
   });
 
