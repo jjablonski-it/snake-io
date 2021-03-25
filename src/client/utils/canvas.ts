@@ -86,7 +86,7 @@ export const createCanvasController = (ctx: CanvasRenderingContext2D) => {
     ctx.fillText(
       name,
       head.x - width / 2 + 0.5,
-      head.y + (direction === Direction.Down ? 1.75 : -0.25)
+      head.y + (direction === Direction.Down ? 2 : -1 / 3)
     );
   };
 
