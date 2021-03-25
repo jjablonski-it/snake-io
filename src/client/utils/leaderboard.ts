@@ -10,18 +10,25 @@ export const updateLeaderboard = ({ me, players }: StateDTO) => {
     .map(getPlayerScoreData)
     .sort((a, b) => b.score - a.score);
 
-  leaderboard.innerHTML = `<ol>${scoreDataToHTML(data).join("")}</ol>`;
+  leaderboard.innerHTML = `<ol>${scoreDataToHTML(data, me).join("")}</ol>`;
 };
 
-const getPlayerScoreData = ({ name, snake: { segments } }: Player) => {
+const getPlayerScoreData = ({ name, snake: { segments }, id }: Player) => {
   return {
+    id,
     name,
     score: (segments.length - TAIL_LENGTH) / LENGTH_PER_FRUIT,
   };
 };
 
-const scoreDataToHTML = (data: ReturnType<typeof getPlayerScoreData>[]) => {
+const scoreDataToHTML = (
+  data: ReturnType<typeof getPlayerScoreData>[],
+  me: Player
+) => {
   return data.map(
-    ({ name, score }) => `<li>${name} <span class=score>${score}</span></li>`
+    ({ name, score, id }) =>
+      `<li ${
+        id === me.id && `class=me`
+      }>${name} <span class=score>${score}</span></li>`
   );
 };
