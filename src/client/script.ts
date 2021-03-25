@@ -20,4 +20,6 @@ const canvas = document.querySelector("canvas");
   });
 
   setupWindowListeners(socket);
+
+  socket.emit("set-name", prompt("Enter username"));
 })();

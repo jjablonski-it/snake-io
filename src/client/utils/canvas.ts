@@ -67,7 +67,7 @@ export const createCanvasController = (ctx: CanvasRenderingContext2D) => {
   };
 
   const drawPlayer = (
-    { snake: { head, segments, direction } }: Player,
+    { snake: { head, segments, direction }, name }: Player,
     headColor: string = "blue",
     bodyColor: string = "gray",
     font: string = "1px roboto"
@@ -81,13 +81,12 @@ export const createCanvasController = (ctx: CanvasRenderingContext2D) => {
     });
 
     ctx.font = font;
-    const name = "####";
     const { width } = ctx.measureText(name);
 
     ctx.fillText(
       name,
       head.x - width / 2 + 0.5,
-      head.y + (direction === Direction.Down ? 2 : 0)
+      head.y + (direction === Direction.Down ? 1.75 : -0.25)
     );
   };
 

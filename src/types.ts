@@ -27,6 +27,7 @@ export interface Vector {
 export interface Player {
   id: string;
   snake: Snake;
+  name: string;
   getSocket: () => Socket;
 }
 export interface State {

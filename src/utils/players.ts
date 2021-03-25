@@ -17,6 +17,7 @@ export const getOrAddPlayer = (socket: Socket) => {
     getSocket() {
       return socket;
     },
+    name: "",
   };
   players.push(newPlayer);
   return newPlayer;
