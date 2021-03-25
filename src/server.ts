@@ -1,6 +1,6 @@
 import express from "express";
 import { Server } from "socket.io";
-import { NAME_LENGTH, PORT } from "./utils/constants";
+import { NAME_LENGTH, PORT } from "./utils/config";
 import { handlePlayerMovement, initGame } from "./utils/game";
 import { getOrAddPlayer, removePlayer } from "./utils/players";
 const socket = require("socket.io");

@@ -1,8 +1,3 @@
-// Server
-export const PORT = 25565 || process.env.PORT;
-export const DELAY = 100;
-export const NAME_LENGTH = 20;
-
 // Game
 export const WORLD_SIZE = 20;
 export const CHUNK_SIZE = 10;

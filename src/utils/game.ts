@@ -1,9 +1,9 @@
 import { Server, Socket } from "socket.io";
-import { Direction, Player, State, StateDTO, Turn, Vector } from "../types";
+import { Player, State, StateDTO, Turn, Vector } from "../types";
 import { Chunk } from "./chunk";
+import { DELAY } from "./config";
 import {
   CHUNK_SIZE,
-  DELAY,
   LENGTH_PER_FRUIT,
   RENDER_DISTANCE,
   RENDER_DISTANCE_PER_LENGTH,
