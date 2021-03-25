@@ -1,5 +1,5 @@
 // Server
-export const PORT = 25565;
+export const PORT = 25565 || process.env.PORT;
 export const DELAY = 100;
 export const NAME_LENGTH = 20;
 
@@ -9,8 +9,8 @@ export const CHUNK_SIZE = 10;
 export const WORLD_SIZE_PER_PLAYER = CHUNK_SIZE;
 export const TAIL_LENGTH = 3;
 export const LENGTH_PER_FRUIT = 6;
-export const RENDER_DISTANCE = 3;
-export const RENDER_DISTANCE_PER_LENGTH = 1 / TAIL_LENGTH / LENGTH_PER_FRUIT;
+export const RENDER_DISTANCE = 5;
+export const RENDER_DISTANCE_PER_LENGTH = 0; //1 / TAIL_LENGTH / LENGTH_PER_FRUIT;
 
 // Client
 export const SCALE = 15;
