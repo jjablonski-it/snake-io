@@ -1,6 +1,14 @@
 import { Turn } from "../../types";
+import { createCanvasController } from "./canvas";
 
-export const setupWindowListeners = (socket: SocketIOClient.Socket) => {
+interface Props {
+  handeResize: ReturnType<typeof createCanvasController>["setSize"];
+}
+
+export const setupWindowListeners = (
+  socket: SocketIOClient.Socket,
+  { handeResize }: Props
+) => {
   window.addEventListener("keydown", (e) => {
     const direction = e.key;
     console.log(direction);
@@ -15,5 +23,9 @@ export const setupWindowListeners = (socket: SocketIOClient.Socket) => {
     } else {
       socket.emit("turn", Turn.RIGHT);
     }
+  });
+
+  window.addEventListener("resize", () => {
+    handeResize({ width: window.innerWidth, height: window.innerHeight });
   });
 };

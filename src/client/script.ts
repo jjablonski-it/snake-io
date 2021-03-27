@@ -21,7 +21,7 @@ const canvas = document.querySelector("canvas");
     },
   });
 
-  setupWindowListeners(socket);
+  setupWindowListeners(socket, { handeResize: canvasController.setSize });
 
   socket.emit("set-name", prompt("Enter username") || "");
 })();
